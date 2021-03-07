@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ListBoxItem>
+  <item id="0">
+    <info>鱼C论坛签到</info>
+    <time>每天</time>
+    <PicIndex>0</PicIndex>
+  </item>
+  <item id="1">
+    <info>上马原实践课</info>
+    <time>2021/03/07 09:20</time>
+    <PicIndex>4</PicIndex>
+  </item>
+</ListBoxItem>
