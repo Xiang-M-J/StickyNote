@@ -9,6 +9,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Xml;
+using IWshRuntimeLibrary;
+
 namespace StickyNote
 {
     /// <summary>
@@ -16,10 +18,11 @@ namespace StickyNote
     /// </summary>
     public partial class MainWindow : Window
     {
-        public string XmlPath = System.IO.Directory.GetCurrentDirectory()+ "/configure.xml";  // 定义Xml文件路径，使其与exe文件处于同一目录下
+        public string XmlPath = System.IO.Directory.GetCurrentDirectory() + "/configure.xml";  // 定义Xml文件路径，使其与exe文件处于同一目录下
         public MainWindow()
         {
             InitializeComponent();
+            StartAutomaticallyCreate("StickyNote");
             Dater.Text = DateTime.Today.ToString();  // 日期选择框初始化
             ReadFile();  // 读取文件初始化
         }
@@ -27,7 +30,7 @@ namespace StickyNote
         /// <summary>
         /// 自定义窗口 Begin
         /// </summary>
-        
+
         bool isWiden = false;
         double LeftLocation = 0;
         double Right = 0;
@@ -187,7 +190,7 @@ namespace StickyNote
             "pack://application:,,,/resources/other.png"
         };
 
-        
+
         public List<Item> ItemList { get; set; }
         Item deleteItem = new Item();
         /// <summary>
@@ -236,7 +239,7 @@ namespace StickyNote
                     color = (Color)ColorConverter.ConvertFromString(Color[0]);
                     border.Background = new SolidColorBrush(color);
                 }
-               
+
             }
             catch
             {
@@ -247,21 +250,21 @@ namespace StickyNote
 
             try
             {
-                if (Color[1] != "默认" && Color[1]!="null")
+                if (Color[1] != "默认" && Color[1] != "null")
                 {
                     for (int i = 0; i < ItemList.Count; i++)
                     {
                         ItemList[i].FontColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Color[1]));
                     }
                 }
-                else if(Color[1]!="null")
+                else if (Color[1] != "null")
                 {
                     for (int i = 0; i < ItemList.Count; i++)
                     {
                         ItemList[i].FontColor = MylinearGradientBrush();
                     }
                 }
-                
+
                 MyListBox.ItemsSource = null;
                 MyListBox.ItemsSource = ItemList;
                 //Border2.BorderBrush = new SolidColorBrush(color);
@@ -287,14 +290,14 @@ namespace StickyNote
             //    //TextBlock1.Foreground = new SolidColorBrush(color);
             //}
         }
-        
+
         /// <summary>
         /// 保存Xml文件
         /// </summary>
         private void SaveFile()
         {
             Item item = new Item();
-            
+
             XmlTextWriter writer = new XmlTextWriter(XmlPath, System.Text.Encoding.UTF8);
 
             writer.Formatting = Formatting.Indented;
@@ -319,7 +322,7 @@ namespace StickyNote
         /// </summary>
         private void ReadFile()
         {
-            List<Item> TempItemList=new List<Item>();
+            List<Item> TempItemList = new List<Item>();
             XmlDocument Reader = new XmlDocument();
             try
             {
@@ -382,27 +385,36 @@ namespace StickyNote
             string Text = ItemText.Text;
             string YearM = Convert.ToDateTime(Dater.Text).ToString("yyyy/MM/dd");
             string HourM = " 00:00";
-            if (hour.Text.Length!=0 && minute.Text.Length!=0)
+            if (hour.Text.Length != 0 && minute.Text.Length != 0)
             {
                 HourM = " " + hour.Text + ":" + minute.Text;
             }
-            else if(hour.Text.Length!=0&& minute.Text.Length == 0)
+            else if (hour.Text.Length != 0 && minute.Text.Length == 0)
             {
-                HourM = " " + hour.Text+":"+DateTime.Now.Minute;
+                HourM = " " + hour.Text + ":" + DateTime.Now.Minute;
             }
             else if (hour.Text.Length == 0 && minute.Text.Length != 0)
             {
-                HourM =" "+ DateTime.Now.Hour.ToString() +":"+ minute.Text;
+                HourM = " " + DateTime.Now.Hour.ToString() + ":" + minute.Text;
             }
             else
             {
-                HourM = " 00:00";
+                HourM = " 时间未定";
             }
             string TimeT = YearM + HourM;
-            if (hour.Text == "99" && minute.Text == "99")
+            try
             {
-                TimeT = "每天";
+                if (int.Parse(hour.Text) > 24 || (int.Parse(hour.Text) > 60))
+                {
+                    TimeT = " 每天";
+                }
             }
+            catch
+            {
+
+            }
+            
+            
             int index = comboBox.SelectedIndex;
             if (index == -1)
             {
@@ -414,13 +426,13 @@ namespace StickyNote
                 FontColor = MylinearGradientBrush(),
                 Info = Text,
                 Time = TimeT,
-                PicIndex=index
+                PicIndex = index
             };
             ItemList.Add(newitem);
             ItemText.Text = null;
             hour.Text = null;
             minute.Text = null;
-            comboBox.SelectedIndex = 4;
+            comboBox.SelectedIndex = index;
             FileFlash();
             SaveFile();
         }
@@ -434,7 +446,7 @@ namespace StickyNote
             Regex re = new Regex("[^0-9.-]+");
             e.Handled = re.IsMatch(e.Text);
         }
-        
+
         /// <summary>
         /// 双击显示具体截止时间
         /// </summary>
@@ -468,7 +480,7 @@ namespace StickyNote
         /// <param name="e"></param>
         private void Image2_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            Setting setting = new Setting(this.Top,this.Left);
+            Setting setting = new Setting(this.Top, this.Left);
             setting.sendMessage = Recevie;
             setting.ShowDialog();
         }
@@ -480,7 +492,7 @@ namespace StickyNote
         /// <returns></returns>
         private string FileParse(string type)
         {
-            string plaintext=" ";
+            string plaintext = " ";
             string mdtext = " ";
             string htmltext = " ";
             string errortext = "An error may have occurred, please try again!";
@@ -523,7 +535,7 @@ namespace StickyNote
                 htmltext += "<hr/>\n<table> <thead><tr ><th align =\"center\" > 序号 </th ><th align = \"center\" > 待办事项 </th ><th align = \"center\" > 截止时间 </th >\n</tr >\n</thead >\n <tbody > ";
                 for (int i = 0; i < ItemList.Count; i++)
                 {
-                    htmltext +="<tr>\n <td align=\"center\">"+ (i + 1).ToString() + "</td>\n<td align=\"center\">" + ItemList[i].Info + "</td>\n<td align=\"center\">" + ItemList[i].Time + "</td>\n</tr>\n";
+                    htmltext += "<tr>\n <td align=\"center\">" + (i + 1).ToString() + "</td>\n<td align=\"center\">" + ItemList[i].Info + "</td>\n<td align=\"center\">" + ItemList[i].Time + "</td>\n</tr>\n";
                 }
                 htmltext += "</tbody></article ></body ></html > ";
                 return htmltext;
@@ -549,7 +561,7 @@ namespace StickyNote
             {
                 string filename = sfd.FileName.ToString();
                 string[] fileArray = filename.Split('.');
-                
+
                 if (fileArray[1] == "txt")
                 {
                     StreamWriter FileWriter = new StreamWriter(sfd.FileName);
@@ -570,6 +582,57 @@ namespace StickyNote
                 }
 
             }
+        }
+
+        #region 设置开机自启
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="exeName">程序名</param>
+        /// <returns>bool</returns>
+        public bool StartAutomaticallyCreate(string exeName)
+        {
+            try
+            {
+                WshShell shell = new WshShell();
+                IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(Environment.GetFolderPath(Environment.SpecialFolder.Startup) + "\\" + exeName + ".lnk");
+                //设置快捷方式的目标所在的位置(源程序完整路径) 
+                shortcut.TargetPath = System.Windows.Forms.Application.ExecutablePath;
+                //应用程序的工作目录 
+                //当用户没有指定一个具体的目录时，快捷方式的目标应用程序将使用该属性所指定的目录来装载或保存文件。 
+                shortcut.WorkingDirectory = System.Environment.CurrentDirectory;
+                //MessageBox.Show(shortcut.WorkingDirectory);
+                //目标应用程序窗口类型(1.Normal window普通窗口,3.Maximized最大化窗口,7.Minimized最小化) 
+                shortcut.WindowStyle = 1;
+                 //快捷方式的描述 
+                shortcut.Description = exeName + "_Ink";
+                //设置快捷键(如果有必要的话.) 
+                 //shortcut.Hotkey = "CTRL+ALT+D"; 
+                shortcut.Save();
+                return true;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("error");
+            }
+              return false;
+        }
+
+        /// <summary>
+        /// 开机自启删除
+        /// </summary>
+        /// <param name="exeName">程序名称</param>
+        /// <returns></returns>
+        public bool StartAutomaticallyDel(string exeName)
+        {
+            try
+            {
+                System.IO.File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.Startup) + "\\" + exeName + ".lnk");
+                return true;
+            }
+            catch (Exception) { }
+            return false;
+            #endregion
         }
     }
 }

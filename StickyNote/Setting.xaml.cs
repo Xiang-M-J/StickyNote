@@ -92,7 +92,7 @@ namespace StickyNote
                 DragMove();
             }
         }
-
+        
         /// <summary>
         /// 按钮点击事件 向主窗口传递参数
         /// </summary>

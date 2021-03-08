@@ -61,18 +61,18 @@
     <!--窗口定义 Begin-->
     <Grid Background="AntiqueWhite" >
         <!--自定义窗口（标题栏，关闭按钮） Begin-->
-        <Border Height="18" VerticalAlignment="Top" BorderBrush="#FF92BFF4" BorderThickness="1">
-            <Grid HorizontalAlignment="Stretch" Height="16" VerticalAlignment="Top" MouseDown="Grid_MouseDown" >
+        <Border Height="18" VerticalAlignment="Top" BorderBrush="#FF92BFF4" BorderThickness="1" HorizontalAlignment="Stretch"/>
+        <Grid HorizontalAlignment="Stretch" Height="16" VerticalAlignment="Top" MouseDown="Grid_MouseDown" >
                 <Image x:Name="image" HorizontalAlignment="Left" Width="16" Height="16" VerticalAlignment="Top" Source="resources/Setting.png" />
                 <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Height="16" Margin="20,0,0,0" TextWrapping="Wrap" Text="设置"
-                   VerticalAlignment="Top" Width="70"  LineHeight="12" FontWeight="Bold"
-                   TextTrimming="WordEllipsis" Cursor="None" FontSize="14" Foreground="#CC5D2391" FontFamily="KaiTi" />
+                   VerticalAlignment="Top" Width="200"  LineHeight="12" FontWeight="Bold"
+                   TextTrimming="WordEllipsis" Cursor="Arrow" FontSize="14" Foreground="#CC5D2391" FontFamily="KaiTi" />
                 <Image x:Name="image3" HorizontalAlignment="Right" Height="16" Margin="0,0,0,0" VerticalAlignment="Top" Width="16" Source="resources/close.png" MouseDown="Image3_MouseDown" />
-            </Grid>
-        </Border>
+        </Grid>
+        
         <!--自定义窗口（标题栏，关闭按钮） End-->
-        <StackPanel>
-            <GroupBox x:Name="groupBox" Header="背景颜色" HorizontalAlignment="Left" Height="41" Margin="0,16,0,0" VerticalAlignment="Top" Width="240" FontSize="9">
+        <StackPanel Margin="0,16,0,0">
+            <GroupBox x:Name="groupBox" Header="背景颜色" HorizontalAlignment="Left" Height="41" Margin="0,0,0,0" VerticalAlignment="Top" Width="240" FontSize="9">
                 <StackPanel Orientation="Horizontal">
                     <RadioButton GroupName="bak" Name="Radio1" Style="{StaticResource MyRadioButton}"  HorizontalAlignment="Left" Height="20" Margin="0,3,0,0" VerticalAlignment="Top" Width="20" Background="#FFFFF2AB" />
                     <RadioButton GroupName="bak" Name="Radio2" Style="{StaticResource MyRadioButton}" Height="20" Width="20" Margin="6,3,0,0" Background="#FFCBF1C4" ></RadioButton>
