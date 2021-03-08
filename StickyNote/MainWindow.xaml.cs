@@ -22,7 +22,9 @@ namespace StickyNote
         public MainWindow()
         {
             InitializeComponent();
+
             StartAutomaticallyCreate("StickyNote");
+            //StartAutomaticallyDel("StickyNote");
             Dater.Text = DateTime.Today.ToString();  // 日期选择框初始化
             ReadFile();  // 读取文件初始化
         }
@@ -225,6 +227,8 @@ namespace StickyNote
             }
         }
 
+        public Brush IndexColor=new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFFFF")); // 存储画笔资源
+        public string IndexBrush = "null";
         /// <summary>
         /// 获取子窗口返回的字符串，用于改变主窗口的背景颜色和文字颜色
         /// </summary>
@@ -250,11 +254,13 @@ namespace StickyNote
 
             try
             {
+
                 if (Color[1] != "默认" && Color[1] != "null")
                 {
                     for (int i = 0; i < ItemList.Count; i++)
                     {
                         ItemList[i].FontColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Color[1]));
+                        
                     }
                 }
                 else if (Color[1] != "null")
@@ -264,16 +270,17 @@ namespace StickyNote
                         ItemList[i].FontColor = MylinearGradientBrush();
                     }
                 }
-
-                MyListBox.ItemsSource = null;
-                MyListBox.ItemsSource = ItemList;
+                IndexBrush = Color[1];
+                FileFlash();
+                //MyListBox.ItemsSource = null;
+                //MyListBox.ItemsSource = ItemList;
                 //Border2.BorderBrush = new SolidColorBrush(color);
             }
             catch
             {
-                MessageBox.Show(Color[1]);
+
                 MessageBox.Show("Something Woring goes in the border Color");
-                color = (Color)ColorConverter.ConvertFromString("#FF0092BC");
+                //color = (Color)ColorConverter.ConvertFromString("#FF0092BC");
                 //Border2.BorderBrush = new SolidColorBrush(color);
             }
 
@@ -297,7 +304,7 @@ namespace StickyNote
         private void SaveFile()
         {
             Item item = new Item();
-
+            string str = ReadXml();
             XmlTextWriter writer = new XmlTextWriter(XmlPath, System.Text.Encoding.UTF8);
 
             writer.Formatting = Formatting.Indented;
@@ -314,6 +321,10 @@ namespace StickyNote
                 //关闭item元素
                 writer.WriteEndElement(); // 关闭元素
             }
+            writer.WriteStartElement("item");
+            writer.WriteAttributeString("id", "-1");
+            MessageBox.Show(str);
+            writer.WriteElementString("autostart",str);
             writer.Close();
         }
 
@@ -420,6 +431,7 @@ namespace StickyNote
             {
                 index = 4;
             }
+            
             Item newitem = new Item()
             {
                 ImageSe = new BitmapImage(new Uri(Image[index])),
@@ -428,6 +440,19 @@ namespace StickyNote
                 Time = TimeT,
                 PicIndex = index
             };
+            if (IndexBrush != "null")
+            {
+                try
+                {
+                    newitem.FontColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(IndexBrush));
+                }
+                catch
+                {
+                    MessageBox.Show("");
+                    newitem.FontColor = MylinearGradientBrush();
+                }
+               
+            }
             ItemList.Add(newitem);
             ItemText.Text = null;
             hour.Text = null;
@@ -460,15 +485,16 @@ namespace StickyNote
                 {
                     Item newitem = (Item)MyListBox.SelectedItem;
 
-                    if (newitem.Time != "每天")
-                    {
+                    //if (newitem.Time != "每天")
+                    //{
 
-                        MessageBox.Show(newitem.Time);
-                    }
-                    else
-                    {
-                        MessageBox.Show("每天");
-                    }
+                    //    MessageBox.Show(newitem.Time);
+                    //}
+                    //else
+                    //{
+                    //    MessageBox.Show("每天");
+                    //}
+
                 }
             }
         }
@@ -613,11 +639,26 @@ namespace StickyNote
             }
             catch (Exception)
             {
-                MessageBox.Show("error");
+                MessageBox.Show("Error");
             }
               return false;
         }
-
+        private string ReadXml()
+        {
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(XmlPath);
+                XmlNodeList lis = doc.GetElementsByTagName("autostart");
+                string str = lis[lis.Count-1].InnerText;
+                return str;
+            }
+            catch
+            {
+                MessageBox.Show("Error");
+                return "null";
+            }
+        }
         /// <summary>
         /// 开机自启删除
         /// </summary>
@@ -633,6 +674,24 @@ namespace StickyNote
             catch (Exception) { }
             return false;
             #endregion
+        }
+
+        private void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (MyListBox.Visibility == Visibility.Visible)
+            {
+                SeeImage.Source = new BitmapImage(new Uri("pack://application:,,,/resources/see.png"));
+                InputStack.Visibility = Visibility.Collapsed;
+                MyListBox.Visibility = Visibility.Collapsed;
+                this.Height = 50;
+            }
+            else
+            {
+                SeeImage.Source = new BitmapImage(new Uri("pack://application:,,,/resources/nosee.png"));
+                InputStack.Visibility = Visibility.Visible;
+                MyListBox.Visibility = Visibility.Visible;
+                this.Height = 300;
+            }
         }
     }
 }

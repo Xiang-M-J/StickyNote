@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StickyNote"
         mc:Ignorable="d"
-        Title="Setting" Height="120" Width="240"  AllowsTransparency="True" WindowStyle="None" Background="Transparent" >
+        Title="Setting" Height="130" Width="240"  AllowsTransparency="True" WindowStyle="None" Background="Transparent" Closing="Window_Closing"  >
     <Window.Resources>
         <!--自定义RadioButton样式  Begin -->
 
@@ -105,6 +105,7 @@
                     </RadioButton>
                 </StackPanel>
             </GroupBox>
+            <CheckBox Name="Is_Auto" Content="是否开机自启" Width="95" Margin="140,4,0,0" IsChecked="True"></CheckBox>
         </StackPanel>
     </Grid>
     <!--窗口定义 End-->

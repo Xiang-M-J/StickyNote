@@ -4,7 +4,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="MainWindow" Height="300" Width="240" AllowsTransparency="True" WindowStyle="None"   >
+        Title="MainWindow" Height="300" Width="240" AllowsTransparency="True" WindowStyle="None"  ResizeMode="NoResize">
 
 
     <Window.Resources>
@@ -113,14 +113,14 @@
                 <Setter.Value>
                     <!--列表元素的定义 Begin-->
                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                        <Grid Height="24" x:Name="grid" Background="{Binding GridBack}">
+                        <Grid Height="26" x:Name="grid" Background="{Binding GridBack}">
                             <StackPanel Orientation="Horizontal">
                                 <Border Width="20" Height="20" CornerRadius="2" HorizontalAlignment="Left" Margin="0 0 0 0">
                                     <Image Source="{Binding ImageSe}"></Image>
                                 </Border>
                                 <StackPanel>
                                     <TextBlock Text="{Binding Info}"  Margin="10 0 0 0" FontSize="13" Foreground="{Binding FontColor}"/>
-                                    <TextBlock Text="{Binding Time}" Foreground="#FF1D1D1D" FontSize="5" Margin="20,0,0,0" FontWeight="Bold"></TextBlock>
+                                    <TextBlock Text="{Binding Time}" Foreground="#FF1D1D1D" FontSize="7" Margin="20,0,0,0" FontWeight="Bold"></TextBlock>
                                 </StackPanel>
                             </StackPanel>
                             
@@ -157,6 +157,7 @@
             <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Height="24" Margin="30,0,0,0" TextWrapping="Wrap" Text="便 笺"
                    VerticalAlignment="Top" Width="70" TextAlignment="Justify" LineHeight="12" FontWeight="Bold"
                    TextTrimming="WordEllipsis" Cursor="Arrow" FontSize="20" Foreground="#CC050130" FontFamily="KaiTi" />
+            <Image Name="SeeImage" Source="resources/nosee.png" HorizontalAlignment="Right" Margin="0,0,72,0" Width="24" MouseLeftButtonDown="Image_MouseLeftButtonDown" ></Image>
             <Image x:Name="image2" HorizontalAlignment="Right" Height="24" Margin="0,0,48,0" VerticalAlignment="Bottom" Source="resources/more.png" MouseDown="Image2_MouseDown"></Image>
             <Image x:Name="image1" HorizontalAlignment="Right" Height="24" Margin="0,0,24,0" VerticalAlignment="Bottom" Width="24" Source="resources/minlize.ico" MouseDown="Image1_MouseDown" />
             <Image x:Name="image3" HorizontalAlignment="Right" Height="24" Margin="0,0,0,0" VerticalAlignment="Top" Width="24" Source="resources/cancel.ico" MouseDown="Image3_MouseDown" />
@@ -188,7 +189,7 @@
         <!--自定义窗口（标题栏，关闭，最小化，调整窗口大小）End-->
         
         <!--列表框-->
-        <ListBox  ItemContainerStyle="{StaticResource MyListBoxItem}" x:Name="MyListBox"  Background="Transparent"  Margin="4,24,4,55" KeyDown="MyListBox_KeyDown" MouseDoubleClick="MyListBox_MouseDoubleClick" >
+        <ListBox  ItemContainerStyle="{StaticResource MyListBoxItem}" x:Name="MyListBox"  Background="White"  Margin="4,24,4,55" KeyDown="MyListBox_KeyDown" MouseDoubleClick="MyListBox_MouseDoubleClick" >
             <ListBox.Style>
                 <Style TargetType="ListBox">
                     <Setter Property="Template">
@@ -207,7 +208,7 @@
         </ListBox>
 
         <!--下方输入部分 Begin-->
-        <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Stretch">
+        <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Name="InputStack">
             <StackPanel HorizontalAlignment="Stretch"  Margin="4,0,4,4" VerticalAlignment="Bottom"   Orientation="Horizontal" >
                 <DatePicker Name="Dater" HorizontalAlignment="Left" Height="24" Margin="0,0,0,0" VerticalAlignment="Center" Width="110"
                             SelectedDateFormat="Short" BorderBrush="{x:Null}" Foreground="#FF313F00" Background="{x:Null}">

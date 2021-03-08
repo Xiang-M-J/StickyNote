@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,17 +25,17 @@ namespace StickyNote
         public MyMessageBox()
         {
             InitializeComponent();
-            try
-            {
-                MessageBox.Show(GetStr);
-                string[] TimeArray = GetStr.Split(' ');
-                textBlock2.Text = TimeArray[0];
-                textBlock3.Text = TimeArray[1];
-            }
-            catch
-            {
-                MessageBox.Show("Some errors happen");
-            }
+            //try
+            //{
+            //    MessageBox.Show(GetStr);
+            //    string[] TimeArray = GetStr.Split(' ');
+            //    textBlock2.Text = TimeArray[0];
+            //    textBlock3.Text = TimeArray[1];
+            //}
+            //catch
+            //{
+            //    MessageBox.Show("Some errors happen");
+            //}
         }
         private void Image3_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -48,6 +49,10 @@ namespace StickyNote
             }
 
         }
-
+        private void TB_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex re = new Regex("[^0-9.-]+");
+            e.Handled = re.IsMatch(e.Text);
+        }
     }
 }

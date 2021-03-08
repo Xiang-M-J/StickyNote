@@ -5,18 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StickyNote"
         mc:Ignorable="d"
-        Title="详细信息" Height="100" Width="150" AllowsTransparency="True" WindowStyle="None" Background="AntiqueWhite">
+        Title="详细信息" Height="120" Width="180" AllowsTransparency="True" WindowStyle="None" Background="AntiqueWhite">
     <Grid>
         <Grid HorizontalAlignment="Stretch" Height="16" VerticalAlignment="Top" MouseDown="Grid_MouseDown" Background="#FF6FAEE8">
 
 
             <Image x:Name="image" HorizontalAlignment="Left" Width="16" Height="16" VerticalAlignment="Top" Source="resources/Infomation.png" />
-            <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Height="16" Margin="20,0,0,0" TextWrapping="Wrap" Text="详细信息"
+            <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Height="16" Margin="20,0,0,0" TextWrapping="Wrap" Text="修改信息"
                    VerticalAlignment="Top" Width="70" TextAlignment="Justify" LineHeight="12" FontWeight="Bold"
                    TextTrimming="WordEllipsis" Cursor="None" FontSize="14" Foreground="#CC1904FC" FontFamily="KaiTi" />
             <Image x:Name="image3" HorizontalAlignment="Right" Height="16" Margin="0,0,0,0" VerticalAlignment="Top" Width="24" Source="resources/cancel.ico" MouseDown="Image3_MouseDown" />
         </Grid>
-        <StackPanel Orientation="Horizontal" Height="60" HorizontalAlignment="Center" >
+        <!--<StackPanel Orientation="Horizontal" Height="60" HorizontalAlignment="Center" >
             <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap" Text="截止时间："/>
 
             <StackPanel >
@@ -24,6 +24,24 @@
                 <TextBlock x:Name="textBlock3" HorizontalAlignment="Left" Margin="14,10,0,0" Width="40" Text="00:00" ></TextBlock>
             </StackPanel>
 
+        </StackPanel>-->
+        <StackPanel HorizontalAlignment="Stretch" Height="104" Margin="0,16,0,0">
+            <StackPanel Orientation="Horizontal" Height="30" Margin="0,5,0,0">
+                <TextBlock Height="20" Width="54" Text="待办事项：" FontSize="12" LineHeight="7"></TextBlock>
+                <TextBox Height="20" Width="120" Margin="0,-4,0,0"></TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Height="30" Margin="0,2.5,0,0">
+                <TextBlock Height="20" Width="54" Text="截至时间：" FontSize="12" LineHeight="7"></TextBlock>
+                <DatePicker Margin="10,0,0,0" Width="93"></DatePicker>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Width="80" Height="30" Margin="60,-5,0,0">
+                <TextBox Name="hour" Width="18" Margin="0,0,0,0" Height="15" FontSize="10" Background="{x:Null}" BorderBrush="#FF0040FF" 
+                                 MaxLength="2" InputMethod.IsInputMethodEnabled="False" PreviewTextInput="TB_PreviewTextInput"></TextBox>
+                <TextBlock Text=":" FontSize="10" VerticalAlignment="Center" FontWeight="Bold" Margin="8,0,0,0"></TextBlock>
+                <TextBox Name="minute" Width="18" Margin="8,0,0,0" Height="15" FontSize="10" Background="{x:Null}" BorderBrush="#FF003EF8"
+                                 MaxLength="2" InputMethod.IsInputMethodEnabled="False" PreviewTextInput="TB_PreviewTextInput"></TextBox>
+            </StackPanel>
+            
         </StackPanel>
 
     </Grid>

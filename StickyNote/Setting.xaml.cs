@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Xml;
 
 namespace StickyNote
 {
@@ -26,7 +27,7 @@ namespace StickyNote
         /// <param name="Color"></param>
         public delegate void SendMessage(string[] Color);
         public SendMessage sendMessage;
-
+        public string Path = System.IO.Directory.GetCurrentDirectory() + "/configure.xml";
         /// <summary>
         /// 窗口初始化
         /// </summary>
@@ -35,12 +36,26 @@ namespace StickyNote
         public Setting(double top,double left)
         {
             InitializeComponent();
-            
+
+            //this.Deactivated += Window_Deactivated;
 
             this.WindowStartupLocation = WindowStartupLocation.Manual;
             this.Top = top;
             this.Left = left;
-
+            WriteXml();
+            string ISCheacked = ReadXml();
+            if (ISCheacked == "null")
+            {
+                Is_Auto.IsChecked = false;
+            }
+            else if (ISCheacked == "true")
+            {
+                Is_Auto.IsChecked = true;
+            }
+            else if (ISCheacked == "false")
+            {
+                Is_Auto.IsChecked = false;
+            }
             /// <summary>
             /// 添加按钮点击事件
             /// </summary>
@@ -63,8 +78,45 @@ namespace StickyNote
             Radio71.Checked += new RoutedEventHandler(radio_Checked);
             Radio81.Checked += new RoutedEventHandler(radio_Checked);
             Radio91.Checked += new RoutedEventHandler(radio_Checked);
+            
+           
+        }
+        private void WriteXml()
+        {
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load(Path);
+            XmlNode root = xmlDoc.SelectSingleNode("ListBoxItem");
+            XmlElement xel = xmlDoc.CreateElement("Item");
+            xel.SetAttribute("id", "-1");
+            XmlElement xesub1 = xmlDoc.CreateElement("autostart");
+            if (Is_Auto.IsChecked==true)
+            {
+                xesub1.InnerText = "true";
+            }
+            else
+            {
+                xesub1.InnerText = "false";
+            }
 
+            xel.AppendChild(xesub1);
+            root.AppendChild(xel);
+            xmlDoc.Save(Path);
+        }
 
+        private string ReadXml()
+        {
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(Path);
+                XmlNodeList lis = doc.GetElementsByTagName("autostart");
+                string str = lis[0].InnerText;
+                return str;
+            }
+            catch
+            {
+                return "null";
+            }
         }
         string[] Color = new string[2] {
             "#00000000","#FF0092BC"};
@@ -186,6 +238,9 @@ namespace StickyNote
             sendMessage(Color);
         }
 
-        
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            WriteXml();
+        }
     }
 }
