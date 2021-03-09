@@ -24,20 +24,12 @@ namespace StickyNote
         public delegate void SendMessage(string[] InfoT);
         public SendMessage sendMessage;
         //public string GetStr { get; set; }
-        public MyMessageBox()
+        public MyMessageBox(double top, double left)
         {
             InitializeComponent();
-            //try
-            //{
-            //    MessageBox.Show(GetStr);
-            //    string[] TimeArray = GetStr.Split(' ');
-            //    textBlock2.Text = TimeArray[0];
-            //    textBlock3.Text = TimeArray[1];
-            //}
-            //catch
-            //{
-            //    MessageBox.Show("Some errors happen");
-            //}
+            this.WindowStartupLocation = WindowStartupLocation.Manual;
+            this.Top = top;
+            this.Left = left;
         }
         private void Image3_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -59,7 +51,64 @@ namespace StickyNote
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            string[] StInfo = new string[2];
+            StInfo[0] = NewInfo.Text;
+            string YearM = " ";
+            try
+            {
+                YearM = Convert.ToDateTime(NewDate.Text).ToString("yyyy/MM/dd");
+            }
+            catch
+            {
+                YearM = DateTime.Now.ToString("yyyy/MM/dd");
+            }
+            
+            string HourM = " 00:00";
+            if (hour.Text.Length != 0 && minute.Text.Length != 0)
+            {
+                HourM = " " + hour.Text + ":" + minute.Text;
+            }
+            else if (hour.Text.Length != 0 && minute.Text.Length == 0)
+            {
+                HourM = " " + hour.Text + ":" + DateTime.Now.Minute;
+            }
+            else if (hour.Text.Length == 0 && minute.Text.Length != 0)
+            {
+                HourM = " " + DateTime.Now.Hour.ToString() + ":" + minute.Text;
+            }
+            else
+            {
+                HourM = " 时间未定";
+            }
+            string TimeT = YearM + HourM;
+            try
+            {
+                if (int.Parse(hour.Text) > 24 || (int.Parse(hour.Text) > 60))
+                {
+                    TimeT = " 每天";
+                }
+            }
+            catch
+            {
 
+            }
+            StInfo[1] = TimeT;
+
+            if (StInfo[0].Length != 0)
+            {
+                sendMessage(StInfo);
+            }
+            
+            this.Close();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            NewInfo.Text = null;
+            NewDate.Text = null;
+            hour.Text = null;
+            minute.Text = null;
+            this.Close();
         }
     }
 }

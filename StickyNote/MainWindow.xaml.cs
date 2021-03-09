@@ -22,6 +22,9 @@ namespace StickyNote
         public MainWindow()
         {
             InitializeComponent();
+            WindowStartupLocation = WindowStartupLocation.Manual;
+            this.Top = 10;
+            this.Left = SystemParameters.WorkArea.Width-260;
 
             if (ReadXml()=="true")
             {
@@ -335,7 +338,7 @@ namespace StickyNote
             }
             writer.WriteStartElement("item");
             writer.WriteAttributeString("id", "-1");
-            MessageBox.Show(str);
+            //MessageBox.Show(str);
             writer.WriteElementString("autostart",str);
             writer.Close();
         }
@@ -497,9 +500,13 @@ namespace StickyNote
             e.Handled = re.IsMatch(e.Text);
         }
 
+        private int SelectIndex = 0;
+
         public void GetInfo(string[] InfoT)
         {
-
+            ItemList[SelectIndex].Info = InfoT[0];
+            ItemList[SelectIndex].Time = InfoT[1];
+            FileFlash();
         }
         /// <summary>
         /// 双击显示具体截止时间
@@ -512,9 +519,15 @@ namespace StickyNote
             {
                 if (!MyListBox.Items.IsEmpty)
                 {
-                    MyMessageBox myMessageBox = new MyMessageBox();
+                    Point point = e.GetPosition(null);
+                    double X = 30 + this.Left;
+                    double Y = point.Y + this.Top - 12;
+                    //MessageBox.Show(point.X.ToString());
+                    SelectIndex = MyListBox.SelectedIndex;
+                    MyMessageBox myMessageBox = new MyMessageBox(Y,X);
                     myMessageBox.sendMessage = GetInfo;
                     myMessageBox.ShowDialog();
+                    
                 }
             }
         }

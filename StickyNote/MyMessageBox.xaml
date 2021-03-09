@@ -5,16 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StickyNote"
         mc:Ignorable="d"
-        Title="详细信息" Height="130" Width="180" AllowsTransparency="True" WindowStyle="None" Background="AntiqueWhite">
+        Title="详细信息" Height="130" Width="180" AllowsTransparency="True" WindowStyle="None" Background="#FFEEFFDD">
     <Grid>
-        <Grid HorizontalAlignment="Stretch" Height="16" VerticalAlignment="Top" MouseDown="Grid_MouseDown" Background="#FF6FAEE8">
-
+        <Grid HorizontalAlignment="Stretch" Height="16" VerticalAlignment="Top" MouseDown="Grid_MouseDown" Background="#7F6FAEE8">
 
             <Image x:Name="image" HorizontalAlignment="Left" Width="16" Height="16" VerticalAlignment="Top" Source="resources/Infomation.png" />
             <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Height="16" Margin="20,0,0,0" TextWrapping="Wrap" Text="修改信息"
                    VerticalAlignment="Top" Width="70" TextAlignment="Justify" LineHeight="12" FontWeight="Bold"
                    TextTrimming="WordEllipsis" Cursor="None" FontSize="14" Foreground="#CC1904FC" FontFamily="KaiTi" />
-            <Image x:Name="image3" HorizontalAlignment="Right" Height="16" Margin="0,0,0,0" VerticalAlignment="Top" Width="24" Source="resources/cancel.ico" MouseDown="Image3_MouseDown" />
+            <Image x:Name="image3" HorizontalAlignment="Right" Height="16" Margin="0,0,0,0" VerticalAlignment="Top" Width="16" Source="resources/cancel.ico" MouseDown="Image3_MouseDown" />
         </Grid>
         <!--<StackPanel Orientation="Horizontal" Height="60" HorizontalAlignment="Center" >
             <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap" Text="截止时间："/>
@@ -28,22 +27,22 @@
         <StackPanel HorizontalAlignment="Stretch" Margin="0,16,0,0">
             <StackPanel Orientation="Horizontal" Height="30" Margin="0,5,0,0">
                 <TextBlock Height="20" Width="54" Text="待办事项：" FontSize="12" LineHeight="7"></TextBlock>
-                <TextBox Height="20" Width="120" Margin="0,-4,0,0"></TextBox>
+                <TextBox Name="NewInfo" Height="20" Width="120" Margin="0,-4,0,0"></TextBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Height="30" Margin="0,2.5,0,0">
                 <TextBlock Height="20" Width="54" Text="截至时间：" FontSize="12" LineHeight="7"></TextBlock>
-                <DatePicker Margin="10,0,0,0" Width="93"></DatePicker>
+                <DatePicker Name="NewDate" Margin="10,0,0,0" Width="100" BorderBrush="{x:Null}" Foreground="#FF2C005D"></DatePicker>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Width="80" Height="30" Margin="60,-5,0,0">
-                <TextBox Name="hour" Width="18" Margin="0,0,0,0" Height="15" FontSize="10" Background="{x:Null}" BorderBrush="#FF0040FF" 
-                                 MaxLength="2" InputMethod.IsInputMethodEnabled="False" PreviewTextInput="TB_PreviewTextInput"></TextBox>
+            <StackPanel Orientation="Horizontal" Width="80" Height="30" Margin="50,-5,0,0">
+                <TextBox Name="hour" Width="18" Margin="0,0,0,0" Height="15" FontSize="10" Background="{x:Null}" BorderBrush="#FF7094FF" 
+                                 MaxLength="2" InputMethod.IsInputMethodEnabled="False" PreviewTextInput="TB_PreviewTextInput" SelectionBrush="#FF003F70"></TextBox>
                 <TextBlock Text=":" FontSize="10" VerticalAlignment="Center" FontWeight="Bold" Margin="8,0,0,0"></TextBlock>
-                <TextBox Name="minute" Width="18" Margin="8,0,0,0" Height="15" FontSize="10" Background="{x:Null}" BorderBrush="#FF003EF8"
-                                 MaxLength="2" InputMethod.IsInputMethodEnabled="False" PreviewTextInput="TB_PreviewTextInput"></TextBox>
+                <TextBox Name="minute" Width="18" Margin="8,0,0,0" Height="15" FontSize="10" Background="{x:Null}" BorderBrush="#FF7094FF"
+                                 MaxLength="2" InputMethod.IsInputMethodEnabled="False" PreviewTextInput="TB_PreviewTextInput"  SelectionBrush="#FF003F70"></TextBox>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Height="20">
-                <Button Width="40" Margin="35,0,0,0" BorderBrush="{x:Null}" Content="确定" Click="Button_Click"/>
-                <Button Width="40" Margin="30,0,0,0" BorderBrush="{x:Null}" Content="取消"></Button>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Height="20" Margin="0,-3,0,0">
+                <Button Width="40" Margin="35,0,0,0" BorderBrush="{x:Null}" Content="确定" Click="Button_Click" Background="#FFB8EBEF" Foreground="#FF000F5E" FontSize="12"/>
+                <Button Width="40" Margin="30,0,0,0" BorderBrush="{x:Null}" Content="取消" Click="Button_Click_1" Background="#FFB8EBEF" Foreground="#FF000F5E" FontSize="12"></Button>
             </StackPanel>
         </StackPanel>
 
