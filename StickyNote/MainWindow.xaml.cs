@@ -521,7 +521,7 @@ namespace StickyNote
                 {
                     Point point = e.GetPosition(null);
                     double X = 30 + this.Left;
-                    double Y = point.Y + this.Top - 12;
+                    double Y = point.Y + this.Top + 15;
                     //MessageBox.Show(point.X.ToString());
                     SelectIndex = MyListBox.SelectedIndex;
                     MyMessageBox myMessageBox = new MyMessageBox(Y,X);
@@ -584,13 +584,13 @@ namespace StickyNote
                 htmltext = "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width = device-width, initial-scale = 1\">\n" +
                 "<style>body {max-width: 980px;border: 1px solid #ddd;outline: 1300px solid #fff;margin: 16px auto;}body.markdown-body{padding: 45px;}\n" +
                 ".markdown-body table{border-collapse: collapse;border-spacing: 0;}.markdown-body td,.markdown-body th{padding: 0;}.markdown-body h4{font-size: 1.3em;}\n" +
-                ".markdown-body table{margin-top: 0;margin-bottom: 16px;}.markdown-body hr{height: 4px;padding: 0; margin: 16px 0; background-color: #e7e7e7;border: 0 none;}\n" +
+                ".markdown-body table{margin-top: 0;margin-bottom: 16px;}.markdown-body hr{height: 6px;padding: 0; margin: 16px 0; background-color: #e7e7e7;border: 0 none;}\n" +
                 ".markdown-body table{display: block;width: 100%;overflow: auto;word-break: normal; word-break: keep-all;}.markdown-body table th {font-weight: bold;}\n" +
                 ".markdown-body table th,.markdown-body table td {padding: 6px 13px;border: 1px solid #ddd;}.markdown-body table tr { background-color: #fff;border-top: 1px solid #ccc;}\n" +
                 ".markdown-body table tr:nth-child(2n){ background-color: #f8f8f8;}.markdown-body code{ padding: 0; padding-top: 0.2em; padding-bottom: 0.2em; margin: 0;font-size: 100%;background-color: rgba(0,0,0,0.04);border-radius: 3px;}\n" +
                 ".markdown-body code:before,.markdown-body code:after { letter-spacing: -0.2em; content: \" \\00a0\";}</style>";
                 htmltext += "<title>便笺</title></head>\n <body>\n";
-                htmltext += " <article class=\"markdown - body\"><h4>本文件于<code>" + DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss") + "</code>创建</h4>";
+                htmltext += " <article class=\"markdown-body\"><h2>本文件于<code>" + DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss") + "</code>创建</h2>";
                 htmltext += "<hr/>\n<table> <thead><tr ><th align =\"center\" > 序号 </th ><th align = \"center\" > 待办事项 </th ><th align = \"center\" > 截止时间 </th >\n</tr >\n</thead >\n <tbody > ";
                 for (int i = 0; i < ItemList.Count; i++)
                 {
@@ -724,6 +724,168 @@ namespace StickyNote
                 InputStack.Visibility = Visibility.Visible;
                 MyListBox.Visibility = Visibility.Visible;
                 this.Height = 300;
+            }
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            
+            if (MyListBox.SelectedIndex != -1)
+            {
+                if (!MyListBox.Items.IsEmpty)
+                {
+                    deleteItem = (Item)MyListBox.SelectedItem;
+                    ItemList.Remove(deleteItem);
+                    FileFlash();
+                }
+            }
+        }
+
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            if (MyListBox.SelectedIndex != -1)
+            {
+                if (!MyListBox.Items.IsEmpty)
+                {
+                    Item ExportItem = (Item)MyListBox.SelectedItem;
+                    int num = MyListBox.SelectedIndex;
+                    string plaintext = "本文件于 " + DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss") + " 创建\n";
+                    plaintext += "=====================================================\n";
+                    plaintext += "序号" + "\t" + "待办事项" + "\t\t" + "截止时间\n";
+
+                    plaintext += num.ToString() + "\t" + ExportItem.Info + "\t" + ExportItem.Time + "\n";
+                    
+                    SaveFileDialog sfd = new SaveFileDialog();
+                    sfd.Filter = "文本文件(*.txt )|*.txt";
+                    sfd.RestoreDirectory = true;//保存对话框是否记忆上次打开的目录
+                    if (sfd.ShowDialog() == true)
+                    {
+                        StreamWriter FileWriter = new StreamWriter(sfd.FileName);
+                        FileWriter.Write(plaintext);
+                        FileWriter.Close();
+                    }
+                }
+            }
+            
+        }
+
+        private void MenuItem_Click_2(object sender, RoutedEventArgs e)
+        {
+            if (MyListBox.SelectedIndex != -1)
+            {
+                if (!MyListBox.Items.IsEmpty)
+                {
+                    Item ExportItem = (Item)MyListBox.SelectedItem;
+                    int num = MyListBox.SelectedIndex;
+                    string mdtext = "### 本文件于`" + DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss") + "`创建\n";
+                    mdtext += "***\n";
+                    mdtext += "| 序号|待办事项 |截止时间|\n";
+                    mdtext += ":-:|:-:|:-:\n";
+                    mdtext += num.ToString() + "|" + ExportItem.Info + "|" + ExportItem.Time + "| \n";
+                    SaveFileDialog sfd = new SaveFileDialog();
+                    sfd.Filter = "标记文档(*.md)|*.md";
+                    sfd.RestoreDirectory = true;//保存对话框是否记忆上次打开的目录
+                    if (sfd.ShowDialog() == true)
+                    {
+                        StreamWriter FileWriter = new StreamWriter(sfd.FileName);
+                        FileWriter.Write(mdtext);
+                        FileWriter.Close();
+                    }
+                }
+            }
+        }
+
+        private void MenuItem_Click_3(object sender, RoutedEventArgs e)
+        {
+            if (MyListBox.SelectedIndex != -1)
+            {
+                if (!MyListBox.Items.IsEmpty)
+                {
+                    Item ExportItem = (Item)MyListBox.SelectedItem;
+                    int num = MyListBox.SelectedIndex;
+                    string htmltext = "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width = device-width, initial-scale = 1\">\n" +
+                "<style>body {max-width: 980px;border: 1px solid #ddd;outline: 1300px solid #fff;margin: 16px auto;}body.markdown-body{padding: 45px;}\n" +
+                ".markdown-body table{border-collapse: collapse;border-spacing: 0;}.markdown-body td,.markdown-body th{padding: 0;}.markdown-body h4{font-size: 1.3em;}\n" +
+                ".markdown-body table{margin-top: 0;margin-bottom: 16px;}.markdown-body hr{height: 6px;padding: 0; margin: 16px 0; background-color: #e7e7e7;border: 0 none;}\n" +
+                ".markdown-body table{display: block;width: 100%;overflow: auto;word-break: normal; word-break: keep-all;}.markdown-body table th {font-weight: bold;}\n" +
+                ".markdown-body table th,.markdown-body table td {padding: 6px 13px;border: 1px solid #ddd;}.markdown-body table tr { background-color: #fff;border-top: 1px solid #ccc;}\n" +
+                ".markdown-body table tr:nth-child(2n){ background-color: #f8f8f8;}.markdown-body code{ padding: 0; padding-top: 0.2em; padding-bottom: 0.2em; margin: 0;font-size: 100%;background-color: rgba(0,0,0,0.04);border-radius: 3px;}\n" +
+                ".markdown-body code:before,.markdown-body code:after { letter-spacing: -0.2em; content: \" \\00a0\";}</style>";
+                    htmltext += "<title>便笺</title></head>\n <body>\n";
+                    htmltext += " <article class=\"markdown-body\"><h2>本文件于<code>" + DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss") + "</code>创建</h2>";
+                    htmltext += "<hr/>\n<table> <thead><tr ><th align =\"center\" > 序号 </th ><th align = \"center\" > 待办事项 </th ><th align = \"center\" > 截止时间 </th >\n</tr >\n</thead >\n <tbody > ";
+                    for (int i = 0; i < ItemList.Count; i++)
+                    {
+                        htmltext += "<tr>\n <td align=\"center\">" + (i + 1).ToString() + "</td>\n<td align=\"center\">" + ItemList[i].Info + "</td>\n<td align=\"center\">" + ItemList[i].Time + "</td>\n</tr>\n";
+                    }
+                    htmltext += "</tbody></article ></body ></html > ";
+                    SaveFileDialog sfd = new SaveFileDialog();
+                    sfd.Filter = "网页文件(*.html)|*.html";
+                    sfd.RestoreDirectory = true;//保存对话框是否记忆上次打开的目录
+                    if (sfd.ShowDialog() == true)
+                    {
+                        StreamWriter FileWriter = new StreamWriter(sfd.FileName);
+                        FileWriter.Write(htmltext);
+                        FileWriter.Close();
+                    }
+                }
+            }
+        }
+
+        private void MenuItem_Click_4(object sender, RoutedEventArgs e)
+        {
+            if (MyListBox.SelectedIndex != -1)
+            {
+                if (!MyListBox.Items.IsEmpty)
+                {
+                    string InfoStr = " ";
+                    Item InfoItem = (Item)MyListBox.SelectedItem;
+                    InfoStr += "待办事项：" + InfoItem.Info + "\n" + "截止时间：" + InfoItem.Time;
+                    MessageBox.Show(InfoStr);
+                }
+            }
+            
+        }
+
+        private void MyListBox_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (MyListBox.SelectedIndex != -1)
+            {
+                if (!MyListBox.Items.IsEmpty)
+                {
+                    //使消息可以传递
+                    e.Handled = false;
+                }
+                
+            }
+            else
+            {
+                e.Handled = true;
+            }
+            
+        }
+
+        private void MyListBox_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (MyListBox.SelectedIndex != -1)
+            {
+                if (!MyListBox.Items.IsEmpty)
+                {
+                    MyListBox.SelectedIndex = -1;
+                }
+            }
+        }
+
+        private void MyListBox_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (MyListBox.SelectedIndex != -1)
+            {
+                
+                    if (!MyListBox.Items.IsEmpty)
+                    {
+                        MyListBox.SelectedIndex = -1;
+                    }
+               
             }
         }
     }

@@ -156,5 +156,14 @@
     <Resource Include="resources\nosee.png" />
     <Resource Include="resources\see.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\export.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\Detail.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
