@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StickyNote"
         mc:Ignorable="d"
-        Title="详细信息" Height="120" Width="180" AllowsTransparency="True" WindowStyle="None" Background="AntiqueWhite">
+        Title="详细信息" Height="130" Width="180" AllowsTransparency="True" WindowStyle="None" Background="AntiqueWhite">
     <Grid>
         <Grid HorizontalAlignment="Stretch" Height="16" VerticalAlignment="Top" MouseDown="Grid_MouseDown" Background="#FF6FAEE8">
 
@@ -25,7 +25,7 @@
             </StackPanel>
 
         </StackPanel>-->
-        <StackPanel HorizontalAlignment="Stretch" Height="104" Margin="0,16,0,0">
+        <StackPanel HorizontalAlignment="Stretch" Margin="0,16,0,0">
             <StackPanel Orientation="Horizontal" Height="30" Margin="0,5,0,0">
                 <TextBlock Height="20" Width="54" Text="待办事项：" FontSize="12" LineHeight="7"></TextBlock>
                 <TextBox Height="20" Width="120" Margin="0,-4,0,0"></TextBox>
@@ -41,7 +41,10 @@
                 <TextBox Name="minute" Width="18" Margin="8,0,0,0" Height="15" FontSize="10" Background="{x:Null}" BorderBrush="#FF003EF8"
                                  MaxLength="2" InputMethod.IsInputMethodEnabled="False" PreviewTextInput="TB_PreviewTextInput"></TextBox>
             </StackPanel>
-            
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Height="20">
+                <Button Width="40" Margin="35,0,0,0" BorderBrush="{x:Null}" Content="确定" Click="Button_Click"/>
+                <Button Width="40" Margin="30,0,0,0" BorderBrush="{x:Null}" Content="取消"></Button>
+            </StackPanel>
         </StackPanel>
 
     </Grid>

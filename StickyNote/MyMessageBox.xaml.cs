@@ -21,7 +21,9 @@ namespace StickyNote
     /// </summary>
     public partial class MyMessageBox : Window
     {
-        public string GetStr { get; set; }
+        public delegate void SendMessage(string[] InfoT);
+        public SendMessage sendMessage;
+        //public string GetStr { get; set; }
         public MyMessageBox()
         {
             InitializeComponent();
@@ -53,6 +55,11 @@ namespace StickyNote
         {
             Regex re = new Regex("[^0-9.-]+");
             e.Handled = re.IsMatch(e.Text);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

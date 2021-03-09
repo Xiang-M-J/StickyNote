@@ -23,8 +23,15 @@ namespace StickyNote
         {
             InitializeComponent();
 
-            StartAutomaticallyCreate("StickyNote");
-            //StartAutomaticallyDel("StickyNote");
+            if (ReadXml()=="true")
+            {
+                StartAutomaticallyCreate("StickyNote");
+            }
+            else
+            {
+                StartAutomaticallyDel("StickyNote");
+            }
+            
             Dater.Text = DateTime.Today.ToString();  // 日期选择框初始化
             ReadFile();  // 读取文件初始化
         }
@@ -206,7 +213,10 @@ namespace StickyNote
             public string Info { get; set; }
             public string Time { get; set; }
             public int PicIndex { get; set; }  // 用于标记图片资源
-
+            //public string SeeBox { get; set; }
+            //public Visibility See { get; set; }
+            //public string NewInfo { get; set; }
+            //public string NewTime { get; set; }
         }
 
         /// <summary>
@@ -318,6 +328,8 @@ namespace StickyNote
                 writer.WriteElementString("info", item.Info);
                 writer.WriteElementString("time", item.Time);
                 writer.WriteElementString("PicIndex", item.PicIndex.ToString());
+                //writer.WriteElementString("See", "Collapsed");
+                //item.See = Visibility.Collapsed;
                 //关闭item元素
                 writer.WriteEndElement(); // 关闭元素
             }
@@ -340,7 +352,9 @@ namespace StickyNote
                 Reader.Load(XmlPath);
 
                 XmlNodeList ListInfo = Reader.GetElementsByTagName("info");
+                //XmlNodeList ListSee = Reader.GetElementsByTagName("See");
                 XmlNodeList ListTime = Reader.GetElementsByTagName("time");
+                //XmlNodeList ListNewTime = Reader.GetElementsByTagName("NewTime");
                 XmlNodeList ListIndex = Reader.GetElementsByTagName("PicIndex");
 
                 for (int i = 0; i < ListIndex.Count; i++)
@@ -355,6 +369,10 @@ namespace StickyNote
                         FontColor = MylinearGradientBrush(),
                         Info = ListInfo[i].InnerText,
                         Time = ListTime[i].InnerText,
+                        //See = Visibility.Collapsed,
+                        //See = ListSee[i].InnerText,
+                        //NewTime=ListNewTime[i].InnerText,
+                        //NewInfo=ListNewInfo[i].InnerText,
                         PicIndex = int.Parse(ListIndex[i].InnerText)
                     };
                     TempItemList.Add(newitem);
@@ -368,6 +386,8 @@ namespace StickyNote
                     FontColor = MylinearGradientBrush(),
                     Info = "Welcome",
                     Time = DateTime.Now.ToString("yyyy/MM/dd hh:mm"),
+                    //See = Visibility.Collapsed,
+                    //See = "Collapsed",
                     PicIndex = 4
                 };
                 TempItemList.Add(item);
@@ -431,15 +451,19 @@ namespace StickyNote
             {
                 index = 4;
             }
-            
+
             Item newitem = new Item()
             {
                 ImageSe = new BitmapImage(new Uri(Image[index])),
                 FontColor = MylinearGradientBrush(),
                 Info = Text,
                 Time = TimeT,
+                //See = Visibility.Collapsed,
+                //NewInfo = Text,
+                //NewTime = TimeT,
                 PicIndex = index
             };
+            
             if (IndexBrush != "null")
             {
                 try
@@ -457,6 +481,7 @@ namespace StickyNote
             ItemText.Text = null;
             hour.Text = null;
             minute.Text = null;
+            
             comboBox.SelectedIndex = index;
             FileFlash();
             SaveFile();
@@ -472,6 +497,10 @@ namespace StickyNote
             e.Handled = re.IsMatch(e.Text);
         }
 
+        public void GetInfo(string[] InfoT)
+        {
+
+        }
         /// <summary>
         /// 双击显示具体截止时间
         /// </summary>
@@ -483,18 +512,9 @@ namespace StickyNote
             {
                 if (!MyListBox.Items.IsEmpty)
                 {
-                    Item newitem = (Item)MyListBox.SelectedItem;
-
-                    //if (newitem.Time != "每天")
-                    //{
-
-                    //    MessageBox.Show(newitem.Time);
-                    //}
-                    //else
-                    //{
-                    //    MessageBox.Show("每天");
-                    //}
-
+                    MyMessageBox myMessageBox = new MyMessageBox();
+                    myMessageBox.sendMessage = GetInfo;
+                    myMessageBox.ShowDialog();
                 }
             }
         }
