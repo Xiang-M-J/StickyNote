@@ -17,7 +17,6 @@ namespace StickyNote
 {
     /// <summary>
     /// MyMessageBox.xaml 的交互逻辑
-    /// 该xmal暂时没有实际用处
     /// </summary>
     public partial class MyMessageBox : Window
     {
@@ -31,6 +30,9 @@ namespace StickyNote
             this.Top = top;
             this.Left = left;
         }
+
+        #region 自定义窗口
+
         private void Image3_MouseDown(object sender, MouseButtonEventArgs e)
         {
             this.Close();
@@ -43,12 +45,24 @@ namespace StickyNote
             }
 
         }
+        #endregion
+
+        /// <summary>
+        /// 设置只能输入数字
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TB_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             Regex re = new Regex("[^0-9.-]+");
             e.Handled = re.IsMatch(e.Text);
         }
 
+        /// <summary>
+        /// 修改信息
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             string[] StInfo = new string[2];

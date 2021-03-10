@@ -31,24 +31,16 @@ namespace StickyNote
         /// <summary>
         /// 窗口初始化
         /// </summary>
-        /// <param name="top"></param>
-        /// <param name="left"></param>
+        /// <param name="top">上方</param>
+        /// <param name="left">左方</param>
         public Setting(double top,double left)
         {
             InitializeComponent();
-
-            //this.Deactivated += Window_Deactivated;
-
             this.WindowStartupLocation = WindowStartupLocation.Manual;
             this.Top = top;
             this.Left = left;
-            WriteXml();
             string ISCheacked = ReadXml();
-            if (ISCheacked == "null")
-            {
-                Is_Auto.IsChecked = false;
-            }
-            else if (ISCheacked == "true")
+            if (ISCheacked == "true")
             {
                 Is_Auto.IsChecked = true;
             }
@@ -56,9 +48,9 @@ namespace StickyNote
             {
                 Is_Auto.IsChecked = false;
             }
-            /// <summary>
-            /// 添加按钮点击事件
-            /// </summary>
+
+            #region 添加按钮点击事件
+            
             Radio1.Checked += new RoutedEventHandler(radio_Checked);
             Radio2.Checked += new RoutedEventHandler(radio_Checked);
             Radio3.Checked += new RoutedEventHandler(radio_Checked);
@@ -78,31 +70,48 @@ namespace StickyNote
             Radio71.Checked += new RoutedEventHandler(radio_Checked);
             Radio81.Checked += new RoutedEventHandler(radio_Checked);
             Radio91.Checked += new RoutedEventHandler(radio_Checked);
-            
-           
+
+            #endregion 
+
         }
+
+        /// <summary>
+        /// 向xml中写入配置信息
+        /// </summary>
         private void WriteXml()
         {
-            XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load(Path);
-            XmlNode root = xmlDoc.SelectSingleNode("ListBoxItem");
-            XmlElement xel = xmlDoc.CreateElement("Item");
-            xel.SetAttribute("id", "-1");
-            XmlElement xesub1 = xmlDoc.CreateElement("autostart");
-            if (Is_Auto.IsChecked==true)
+            try
             {
-                xesub1.InnerText = "true";
-            }
-            else
-            {
-                xesub1.InnerText = "false";
-            }
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.Load(Path);
+                XmlNode root = xmlDoc.SelectSingleNode("ListBoxItem");
+                XmlElement xel = xmlDoc.CreateElement("Item");
+                xel.SetAttribute("id", "-1");
+                XmlElement xesub1 = xmlDoc.CreateElement("autostart");
+                if (Is_Auto.IsChecked == true)
+                {
+                    xesub1.InnerText = "true";
+                }
+                else
+                {
+                    xesub1.InnerText = "false";
+                }
 
-            xel.AppendChild(xesub1);
-            root.AppendChild(xel);
-            xmlDoc.Save(Path);
+                xel.AppendChild(xesub1);
+                root.AppendChild(xel);
+                xmlDoc.Save(Path);
+            }
+            catch
+            {
+
+            }
+            
         }
 
+        /// <summary>
+        /// 读取xml
+        /// </summary>
+        /// <returns></returns>
         private string ReadXml()
         {
             try
@@ -115,9 +124,10 @@ namespace StickyNote
             }
             catch
             {
-                return "null";
+                return "false";
             }
         }
+
         string[] Color = new string[2] {
             "#00000000","#FF0092BC"};
         

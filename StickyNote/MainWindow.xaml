@@ -155,7 +155,19 @@
                     <GradientStop Color="#2AF598" Offset="1" />
                 </LinearGradientBrush>
             </Grid.Background>
-            <Image x:Name="image" HorizontalAlignment="Left" Width="24" Height="24" VerticalAlignment="Top" Source="resources/main.png" />
+            <Image x:Name="image" HorizontalAlignment="Left" Width="24" Height="24" VerticalAlignment="Top" Source="resources/main.png" >
+                <Image.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="关于" Click="MenuItem_Click_5">
+                            <MenuItem.Icon>
+                                <Image Source="resources/about.png"></Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </ContextMenu>
+                        
+                       
+                </Image.ContextMenu>
+            </Image>
             <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Height="24" Margin="30,0,0,0" TextWrapping="Wrap" Text="便 笺"
                    VerticalAlignment="Top" Width="70" TextAlignment="Justify" LineHeight="12" FontWeight="Bold"
                    TextTrimming="WordEllipsis" Cursor="Arrow" FontSize="20" Foreground="#CC050130" FontFamily="KaiTi" />
@@ -210,7 +222,7 @@
 
             <ListBox.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="删除" Click="MenuItem_Click" Foreground="#FF005245" Background="#FFEFFFDD" >
+                    <MenuItem Header="删除(Del)" Click="MenuItem_Click" Foreground="#FF005245" Background="#FFEFFFDD" >
                         <MenuItem.Icon>
                             <Image Source="resources/delete.png" Width="16" Height="16"></Image>
                         </MenuItem.Icon>
@@ -219,9 +231,21 @@
                         <MenuItem.Icon>
                             <Image Source="resources/export.png" Width="16" Height="16"></Image>
                         </MenuItem.Icon>
-                        <MenuItem Header="文本文件(*.txt)" Click="MenuItem_Click_1" Background="#FFEAFEFF" Foreground="#FF004B5C"></MenuItem>
-                        <MenuItem Header="标记文档(*.md)" Click="MenuItem_Click_2"  Background="#FFEAFEFF" Foreground="#FF004B5C"></MenuItem>
-                        <MenuItem Header="网页文件(*.html)" Click="MenuItem_Click_3" Background="#FFEAFEFF" Foreground="#FF004B5C"></MenuItem>
+                        <MenuItem Header="文本文件(*.txt)" Click="MenuItem_Click_1" Background="#FFEAFEFF" Foreground="#FF004B5C">
+                            <MenuItem.Icon>
+                                <Image Source="resources/Text.png" Width="16" Height="16"></Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="标记文档(*.md)" Click="MenuItem_Click_2"  Background="#FFEAFEFF" Foreground="#FF004B5C">
+                            <MenuItem.Icon>
+                                <Image Source="resources/Markdown.png" Width="16" Height="16"></Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="网页文件(*.html)" Click="MenuItem_Click_3" Background="#FFEAFEFF" Foreground="#FF004B5C">
+                            <MenuItem.Icon>
+                                <Image Source="resources/HTML.png" Width="16" Height="16"></Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </MenuItem>
                     <MenuItem Header="详细信息" Foreground="#FF005245" Background="#FFEFFFDD" Click="MenuItem_Click_4">
                         <MenuItem.Icon>

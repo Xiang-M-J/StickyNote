@@ -92,7 +92,7 @@
                     <RadioButton GroupName="txt" Name="Radio31" Style="{StaticResource MyRadioButton}" Height="20" Width="20" Margin="6,3,0,0" Background="#FF850041" ></RadioButton>
                     <RadioButton GroupName="txt" Name="Radio41" Style="{StaticResource MyRadioButton}" Height="20" Width="20" Margin="6,3,0,0" Background="#FF177000" ></RadioButton>
                     <RadioButton GroupName="txt" Name="Radio51" Style="{StaticResource MyRadioButton}" Height="20" Width="20" Margin="6,3,0,0" Background="White" ></RadioButton>
-                    <RadioButton GroupName="txt" Name="Radio61" Style="{StaticResource MyRadioButton}" Height="20" Width="20" Margin="6,3,0,0" Background="#FFF7D000" ></RadioButton>
+                    <RadioButton GroupName="txt" Name="Radio61" Style="{StaticResource MyRadioButton}" Height="20" Width="20" Margin="6,3,0,0" Background="#FF7C7C00" ></RadioButton>
                     <RadioButton GroupName="txt" Name="Radio71" Style="{StaticResource MyRadioButton}" Height="20" Width="20" Margin="6,3,0,0" Background="#c0c0c0"   ></RadioButton>
                     <RadioButton GroupName="txt" Name="Radio81" Style="{StaticResource MyRadioButton}" Height="20" Width="20" Margin="6,3,0,0" Background="#FF280376" ></RadioButton>
                     <RadioButton GroupName="txt" Name="Radio91" Style="{StaticResource MyRadioButton}" Height="20" Width="20" Margin="6,3,0,0" >

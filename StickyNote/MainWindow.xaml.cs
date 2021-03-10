@@ -22,10 +22,14 @@ namespace StickyNote
         public MainWindow()
         {
             InitializeComponent();
+
+            #region 设置主窗口的初始位置
             WindowStartupLocation = WindowStartupLocation.Manual;
             this.Top = 10;
             this.Left = SystemParameters.WorkArea.Width-260;
+            #endregion
 
+            #region 设置是否开机自启
             if (ReadXml()=="true")
             {
                 StartAutomaticallyCreate("StickyNote");
@@ -34,7 +38,8 @@ namespace StickyNote
             {
                 StartAutomaticallyDel("StickyNote");
             }
-            
+            #endregion
+
             Dater.Text = DateTime.Today.ToString();  // 日期选择框初始化
             ReadFile();  // 读取文件初始化
         }
@@ -331,14 +336,11 @@ namespace StickyNote
                 writer.WriteElementString("info", item.Info);
                 writer.WriteElementString("time", item.Time);
                 writer.WriteElementString("PicIndex", item.PicIndex.ToString());
-                //writer.WriteElementString("See", "Collapsed");
-                //item.See = Visibility.Collapsed;
                 //关闭item元素
                 writer.WriteEndElement(); // 关闭元素
             }
             writer.WriteStartElement("item");
             writer.WriteAttributeString("id", "-1");
-            //MessageBox.Show(str);
             writer.WriteElementString("autostart",str);
             writer.Close();
         }
@@ -350,14 +352,13 @@ namespace StickyNote
         {
             List<Item> TempItemList = new List<Item>();
             XmlDocument Reader = new XmlDocument();
+            bool IS_Exit = false;
             try
             {
                 Reader.Load(XmlPath);
 
                 XmlNodeList ListInfo = Reader.GetElementsByTagName("info");
-                //XmlNodeList ListSee = Reader.GetElementsByTagName("See");
                 XmlNodeList ListTime = Reader.GetElementsByTagName("time");
-                //XmlNodeList ListNewTime = Reader.GetElementsByTagName("NewTime");
                 XmlNodeList ListIndex = Reader.GetElementsByTagName("PicIndex");
 
                 for (int i = 0; i < ListIndex.Count; i++)
@@ -380,6 +381,7 @@ namespace StickyNote
                     };
                     TempItemList.Add(newitem);
                 }
+                IS_Exit = true;
             }
             catch
             {
@@ -389,13 +391,17 @@ namespace StickyNote
                     FontColor = MylinearGradientBrush(),
                     Info = "Welcome",
                     Time = DateTime.Now.ToString("yyyy/MM/dd hh:mm"),
-                    //See = Visibility.Collapsed,
-                    //See = "Collapsed",
                     PicIndex = 4
                 };
                 TempItemList.Add(item);
+
             }
             ItemList = TempItemList;
+            if (!IS_Exit)
+            {
+                SaveFile();
+            }
+            
 
             FileFlash();
         }
@@ -672,7 +678,7 @@ namespace StickyNote
             }
             catch (Exception)
             {
-                MessageBox.Show("Error");
+                MessageBox.Show("设置开机自启时出现错误");
             }
               return false;
         }
@@ -688,8 +694,8 @@ namespace StickyNote
             }
             catch
             {
-                MessageBox.Show("Error");
-                return "null";
+
+                return "false";
             }
         }
         /// <summary>
@@ -709,6 +715,11 @@ namespace StickyNote
             #endregion
         }
 
+        /// <summary>
+        /// 设置待办事项是否可见
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (MyListBox.Visibility == Visibility.Visible)
@@ -727,6 +738,11 @@ namespace StickyNote
             }
         }
 
+        /// <summary>
+        /// 右键菜单删除定义
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             
@@ -741,6 +757,11 @@ namespace StickyNote
             }
         }
 
+        /// <summary>
+        /// 右键菜单导出为txt格式
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)
         {
             if (MyListBox.SelectedIndex != -1)
@@ -769,6 +790,11 @@ namespace StickyNote
             
         }
 
+        /// <summary>
+        /// 右键菜单导出为md
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MenuItem_Click_2(object sender, RoutedEventArgs e)
         {
             if (MyListBox.SelectedIndex != -1)
@@ -795,6 +821,11 @@ namespace StickyNote
             }
         }
 
+        /// <summary>
+        /// 右键菜单导出为网页.html
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MenuItem_Click_3(object sender, RoutedEventArgs e)
         {
             if (MyListBox.SelectedIndex != -1)
@@ -814,10 +845,9 @@ namespace StickyNote
                     htmltext += "<title>便笺</title></head>\n <body>\n";
                     htmltext += " <article class=\"markdown-body\"><h2>本文件于<code>" + DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss") + "</code>创建</h2>";
                     htmltext += "<hr/>\n<table> <thead><tr ><th align =\"center\" > 序号 </th ><th align = \"center\" > 待办事项 </th ><th align = \"center\" > 截止时间 </th >\n</tr >\n</thead >\n <tbody > ";
-                    for (int i = 0; i < ItemList.Count; i++)
-                    {
-                        htmltext += "<tr>\n <td align=\"center\">" + (i + 1).ToString() + "</td>\n<td align=\"center\">" + ItemList[i].Info + "</td>\n<td align=\"center\">" + ItemList[i].Time + "</td>\n</tr>\n";
-                    }
+                    
+                    htmltext += "<tr>\n <td align=\"center\">" + num.ToString() + "</td>\n<td align=\"center\">" + ExportItem.Info + "</td>\n<td align=\"center\">" + ExportItem.Time + "</td>\n</tr>\n";
+                   
                     htmltext += "</tbody></article ></body ></html > ";
                     SaveFileDialog sfd = new SaveFileDialog();
                     sfd.Filter = "网页文件(*.html)|*.html";
@@ -832,6 +862,11 @@ namespace StickyNote
             }
         }
 
+        /// <summary>
+        /// 右键菜单详细信息
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MenuItem_Click_4(object sender, RoutedEventArgs e)
         {
             if (MyListBox.SelectedIndex != -1)
@@ -840,13 +875,18 @@ namespace StickyNote
                 {
                     string InfoStr = " ";
                     Item InfoItem = (Item)MyListBox.SelectedItem;
-                    InfoStr += "待办事项：" + InfoItem.Info + "\n" + "截止时间：" + InfoItem.Time;
+                    InfoStr += "\t待办事项：" + InfoItem.Info + "\t\n\n" + "\t截止时间：" + InfoItem.Time+"\t";
                     MessageBox.Show(InfoStr);
                 }
             }
             
         }
 
+        /// <summary>
+        /// 防止右键按下时在非列表项区域弹出右键菜单
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MyListBox_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (MyListBox.SelectedIndex != -1)
@@ -865,28 +905,64 @@ namespace StickyNote
             
         }
 
+        /// <summary>
+        /// 左键按下空白区域时取消对列表项的选择
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MyListBox_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (MyListBox.SelectedIndex != -1)
+            try
             {
-                if (!MyListBox.Items.IsEmpty)
+                if (MyListBox.SelectedIndex != -1)
                 {
-                    MyListBox.SelectedIndex = -1;
-                }
-            }
-        }
-
-        private void MyListBox_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (MyListBox.SelectedIndex != -1)
-            {
-                
                     if (!MyListBox.Items.IsEmpty)
                     {
                         MyListBox.SelectedIndex = -1;
                     }
-               
+                }
             }
+            catch
+            {
+                MessageBox.Show("列表框在左键按下时出现未知错误");
+            }
+            
+        }
+
+        /// <summary>
+        /// 右键按下非列表项区域时取消对列表项的选择
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+
+        private void MyListBox_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                if (MyListBox.SelectedIndex != -1)
+                {
+
+                    if (!MyListBox.Items.IsEmpty)
+                    {
+                        MyListBox.SelectedIndex = -1;
+                    }
+
+                }
+            }
+            catch
+            {
+                MessageBox.Show("列表框在右键按下时出现未知错误");
+            }
+            
+        }
+
+        private void MenuItem_Click_5(object sender, RoutedEventArgs e)
+        {
+            string PopMessage = "\tStickyNote\t\n";
+            PopMessage += "\t完成时间：2021/3/10\t\n";
+            PopMessage += "\t版本号：v1.0.1\t\n";
+            PopMessage += "\t代码地址：https://github.com/Xiang-M-J/StickyNote \t";
+            MessageBox.Show(PopMessage);
         }
     }
 }
