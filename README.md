@@ -2,7 +2,7 @@
 一个简单的便签程序
 
 ### 程序演示
-<div align="center"><img src="./pic//example.gif" width="50"></div>
+<div align="center"><img src="./pic//example.gif" width="300"></div>
 
 ### 窗口简介
 
