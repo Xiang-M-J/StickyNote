@@ -730,7 +730,7 @@ namespace StickyNote
         /// <summary>
         /// 获取当前开机自启的状态
         /// </summary>
-        /// <returns>(string) "true" or "false"</returns>
+        /// <returns>(string)"true" or "false"</returns>
         private string ReadXml()
         {
             try
@@ -1052,9 +1052,9 @@ namespace StickyNote
         /// <param name="e"></param>
         private void MenuItem_Click_5(object sender, RoutedEventArgs e)
         {
-            string PopMessage = "\tStickyNote\t\n";
+            string PopMessage = "\t程序名：StickyNote\t\n";
             PopMessage += "\t完成时间：2021/3/10\t\n";
-            PopMessage += "\t版本号：v1.1.1\t\n";
+            PopMessage += "\t版本号："+ System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()+ "\t\n";
             PopMessage += "\t代码地址：https://github.com/Xiang-M-J/StickyNote \t";
             MessageBox.Show(PopMessage);
         }
