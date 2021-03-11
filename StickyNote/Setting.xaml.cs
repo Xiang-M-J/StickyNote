@@ -27,7 +27,7 @@ namespace StickyNote
         /// <param name="Color"></param>
         public delegate void SendMessage(string[] Color);
         public SendMessage sendMessage;
-        public string Path = System.IO.Directory.GetCurrentDirectory() + "/configure.xml";
+        //public string Path = System.IO.Directory.GetCurrentDirectory() + "/configure.xml";
         /// <summary>
         /// 窗口初始化
         /// </summary>
@@ -39,16 +39,16 @@ namespace StickyNote
             this.WindowStartupLocation = WindowStartupLocation.Manual;
             this.Top = top;
             this.Left = left;
-            string ISCheacked = ReadXml();
-            if (ISCheacked == "true")
-            {
-                Is_Auto.IsChecked = true;
-            }
-            else if (ISCheacked == "false")
-            {
-                Is_Auto.IsChecked = false;
-            }
-
+            //string ISCheacked = ReadXml();
+            //if (ISCheacked == "true")
+            //{
+            //    Is_Auto.IsChecked = true;
+            //}
+            //else if (ISCheacked == "false")
+            //{
+            //    Is_Auto.IsChecked = false;
+            //}
+            
             #region 添加按钮点击事件
             
             Radio1.Checked += new RoutedEventHandler(radio_Checked);
@@ -78,59 +78,135 @@ namespace StickyNote
         /// <summary>
         /// 向xml中写入配置信息
         /// </summary>
-        private void WriteXml()
-        {
-            try
-            {
-                XmlDocument xmlDoc = new XmlDocument();
-                xmlDoc.Load(Path);
-                XmlNode root = xmlDoc.SelectSingleNode("ListBoxItem");
-                XmlElement xel = xmlDoc.CreateElement("Item");
-                xel.SetAttribute("id", "-1");
-                XmlElement xesub1 = xmlDoc.CreateElement("autostart");
-                if (Is_Auto.IsChecked == true)
-                {
-                    xesub1.InnerText = "true";
-                }
-                else
-                {
-                    xesub1.InnerText = "false";
-                }
+        //private void WriteXml()
+        //{
+        //    //try
+        //    //{
+        //    //    if (!CheckXml("Signal"))
+        //    //    {
+        //    //        //MessageBox.Show("exist");
+        //    //        //XmlDocument xmlDoc = new XmlDocument();
+        //    //        //xmlDoc.Load(Path);
+        //    //        //XmlNode root = xmlDoc.SelectSingleNode("ListBoxItem");
+        //    //        //XmlElement xel = xmlDoc.CreateElement("Signal");
+        //    //        //xel.SetAttribute("id", "-1");
+        //    //        //XmlElement xesub1 = xmlDoc.CreateElement("autostart");
+        //    //        //if (Is_Auto.IsChecked == true)
+        //    //        //{
+        //    //        //    MessageBox.Show("true1");
+        //    //        //    xesub1.InnerText = "true";
+        //    //        //}
+        //    //        //else
+        //    //        //{
+        //    //        //    MessageBox.Show("false1");
+        //    //        //    xesub1.InnerText = "false";
+        //    //        //}
 
-                xel.AppendChild(xesub1);
-                root.AppendChild(xel);
-                xmlDoc.Save(Path);
-            }
-            catch
-            {
+        //    //        //xel.AppendChild(xesub1);
+        //    //        //root.AppendChild(xel);
+        //    //        //xmlDoc.Save(Path);
+        //    //    }
+        //    //    else
+        //    //    {
+        //    //        MessageBox.Show("ext111");
+        //    //        XmlDocument xmlDoc = new XmlDocument();
+        //    //        xmlDoc.Load(Path);//加载xml文件，文件
+        //    //        XmlNode xns = xmlDoc.SelectSingleNode("Signal");//查找要修改的节点
+        //    //        XmlNodeList xnl = xns.ChildNodes;//取出所有的子节点
+        //    //        foreach (XmlNode xn in xnl)
+        //    //        {
+        //    //            XmlElement xe = (XmlElement)xn;//将节点转换一下类型
+        //    //            //if (xe.GetAttribute("id") == "-1")//判断该子节点是否是要查找的节点
+        //    //            //{
+        //    //            //    xe.SetAttribute("类别", "娱乐");//设置新值
+        //    //            //}
+        //    //            //else//为了有更明显的效果，所以不管是否是符合条件的子节点，我都给一个操作
+        //    //            //{
+        //    //            //    xe.SetAttribute("类别", "文学");
+        //    //            //}
 
-            }
+        //    //            XmlNodeList xnl2 = xe.ChildNodes;//取出该子节点下面的所有元素
+        //    //            foreach (XmlNode xn2 in xnl2)
+        //    //            {
+        //    //                XmlElement xe2 = (XmlElement)xn2;//转换类型
+        //    //                if (xe2.Name == "autostart")//判断是否是要查找的元素
+        //    //                {
+        //    //                    if (Is_Auto.IsChecked == true)
+        //    //                    {
+        //    //                        xe2.InnerText = "true";
+        //    //                    }
+        //    //                    else
+        //    //                    {
+                                    
+        //    //                        xe2.InnerText = "false";
+        //    //                    }
+
+        //    //                }
+        //    //            }
+        //    //        }
+        //    //        xmlDoc.Save(Path);
+
+        //    //    }
+        //    //    //XmlDocument doc = new XmlDocument();
+        //    //    //doc.Load(Path);
+        //    //    //XmlNodeList lis = doc.GetElementsByTagName("autostart");
+        //    //    //lis[0].InnerText = ReadXml();
+        //    //}
+        //    //catch
+        //    //{
+
+        //    //}
             
-        }
+        //}
 
+        //public static bool CheckXml(string node)
+        //{
+        //    try
+        //    {
+        //        XmlDocument Checker = new XmlDocument();
+        //        Checker.Load(System.IO.Directory.GetCurrentDirectory() + "/configure.xml");
+        //        XmlNodeList HeaderList = Checker.DocumentElement.ChildNodes;
+        //        foreach (XmlElement element in HeaderList)
+        //        {
+        //            if (element.Name == node)
+        //            {
+        //                return true;
+        //            }
+        //        }
+        //    }
+        //    catch
+        //    {
+
+        //    }
+
+        //    //MessageBox.Show(HeaderList[1].ToString());
+        //    return false;
+
+           
+        //}
         /// <summary>
         /// 读取xml
         /// </summary>
         /// <returns></returns>
-        private string ReadXml()
-        {
-            try
-            {
-                XmlDocument doc = new XmlDocument();
-                doc.Load(Path);
-                XmlNodeList lis = doc.GetElementsByTagName("autostart");
-                string str = lis[0].InnerText;
-                return str;
-            }
-            catch
-            {
-                return "false";
-            }
-        }
+        //private string ReadXml()
+        //{
+        //    try
+        //    {
+        //        XmlDocument doc = new XmlDocument();
+        //        doc.Load(Path);
+        //        XmlNodeList lis = doc.GetElementsByTagName("autostart");
+        //        string str = lis[0].InnerText;
+        //        //MessageBox.Show("12345");
+        //        return str;
+        //    }
+        //    catch
+        //    {
+        //        return "false";
+        //    }
+        //}
 
         string[] Color = new string[2] {
             "#00000000","#FF0092BC"};
-        
 
         /// <summary>
         /// 控制窗口关闭
@@ -139,6 +215,7 @@ namespace StickyNote
         /// <param name="e"></param>
         private void Image3_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            //WriteXml();
             this.Close();
         }
 
@@ -250,7 +327,7 @@ namespace StickyNote
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            WriteXml();
+            //WriteXml();
         }
     }
 }

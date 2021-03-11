@@ -163,6 +163,11 @@
                                 <Image Source="resources/about.png"></Image>
                             </MenuItem.Icon>
                         </MenuItem>
+                        <MenuItem Header="是否开机自启" Click="MenuItem_Click_6" >
+                            <MenuItem.Icon>
+                                <Image Name="YesImage"></Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </ContextMenu>
                         
                        

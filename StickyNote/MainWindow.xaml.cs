@@ -29,13 +29,15 @@ namespace StickyNote
             this.Left = SystemParameters.WorkArea.Width-260;
             #endregion
 
-            #region 设置是否开机自启
-            if (ReadXml()=="true")
+            #region 设置是否开机自启和初始化
+            if (ReadXml() == "true")
             {
+                YesImage.Source = new BitmapImage(new Uri("pack://application:,,,/resources/yes.png"));
                 StartAutomaticallyCreate("StickyNote");
             }
             else
             {
+                YesImage.Source = null;
                 StartAutomaticallyDel("StickyNote");
             }
             #endregion
@@ -323,8 +325,10 @@ namespace StickyNote
         {
             Item item = new Item();
             string str = ReadXml();
-            XmlTextWriter writer = new XmlTextWriter(XmlPath, System.Text.Encoding.UTF8);
+           
 
+            XmlTextWriter writer = new XmlTextWriter(XmlPath, System.Text.Encoding.UTF8);
+            
             writer.Formatting = Formatting.Indented;
             writer.WriteStartDocument(); //XML声明 
             writer.WriteStartElement("ListBoxItem");
@@ -339,9 +343,24 @@ namespace StickyNote
                 //关闭item元素
                 writer.WriteEndElement(); // 关闭元素
             }
-            writer.WriteStartElement("item");
+            writer.WriteStartElement("Signal");
             writer.WriteAttributeString("id", "-1");
-            writer.WriteElementString("autostart",str);
+            writer.WriteElementString("auto", str);
+            
+            
+            //if(!Is_Auto){
+            //writer.WriteStartElement("Signal");
+            //writer.WriteAttributeString("id", "-1");
+            //writer.WriteElementString("autostart", str);
+            //}
+            //else
+            //{
+            //    XmlDocument doc = new XmlDocument();
+            //    doc.Load(XmlPath);
+            //    XmlNodeList lis = doc.GetElementsByTagName("autostart");
+            //    lis[0].InnerText = str;
+            //}
+           
             writer.Close();
         }
 
@@ -360,7 +379,7 @@ namespace StickyNote
                 XmlNodeList ListInfo = Reader.GetElementsByTagName("info");
                 XmlNodeList ListTime = Reader.GetElementsByTagName("time");
                 XmlNodeList ListIndex = Reader.GetElementsByTagName("PicIndex");
-
+                
                 for (int i = 0; i < ListIndex.Count; i++)
                 {
                     if (int.Parse(ListIndex[i].InnerText) == -1)
@@ -373,10 +392,6 @@ namespace StickyNote
                         FontColor = MylinearGradientBrush(),
                         Info = ListInfo[i].InnerText,
                         Time = ListTime[i].InnerText,
-                        //See = Visibility.Collapsed,
-                        //See = ListSee[i].InnerText,
-                        //NewTime=ListNewTime[i].InnerText,
-                        //NewInfo=ListNewInfo[i].InnerText,
                         PicIndex = int.Parse(ListIndex[i].InnerText)
                     };
                     TempItemList.Add(newitem);
@@ -399,12 +414,41 @@ namespace StickyNote
             ItemList = TempItemList;
             if (!IS_Exit)
             {
+                //MessageBox.Show("there is no xml");
                 SaveFile();
             }
             
 
             FileFlash();
         }
+
+        ///// <summary>
+        ///// 用于判断是否含有某一个节点
+        ///// </summary>
+        ///// <param name="node"></param>
+        ///// <returns>(bool) true or false</returns>
+        //public static bool CheckXml(string node)
+        //{
+        //    try
+        //    {
+        //        XmlDocument Checker = new XmlDocument();
+        //        Checker.Load(System.IO.Directory.GetCurrentDirectory() + "/configure.xml");
+        //        XmlNodeList HeaderList = Checker.DocumentElement.ChildNodes;
+        //        foreach (XmlElement element in HeaderList)
+        //        {
+        //            if (element.Name == node)
+        //            {
+        //                MessageBox.Show("find it");
+        //                return true;
+        //            }
+        //        }
+        //    }
+        //    catch
+        //    {
+        //        return false;
+        //    }
+        //    return false;
+        //}
 
         /// <summary>
         /// 刷新列表框
@@ -682,19 +726,23 @@ namespace StickyNote
             }
               return false;
         }
+
+        /// <summary>
+        /// 获取当前开机自启的状态
+        /// </summary>
+        /// <returns>(string) "true" or "false"</returns>
         private string ReadXml()
         {
             try
             {
                 XmlDocument doc = new XmlDocument();
                 doc.Load(XmlPath);
-                XmlNodeList lis = doc.GetElementsByTagName("autostart");
-                string str = lis[lis.Count-1].InnerText;
+                XmlNodeList lis = doc.GetElementsByTagName("auto");
+                string str = lis[lis.Count - 1].InnerText;
                 return str;
             }
             catch
             {
-
                 return "false";
             }
         }
@@ -955,14 +1003,78 @@ namespace StickyNote
             }
             
         }
+        /// <summary>
+        /// 修改xml文件中的auto项
+        /// </summary>
+        /// <param name="Rev"></param>
+        private void ReviseXml(string Rev)
+        {
+            try
+            {
+                XmlDocument XmlDoc = new XmlDocument();
+                XmlDoc.Load(XmlPath);//加载xml文件，文件
 
+                XmlNode xns = XmlDoc.SelectSingleNode("ListBoxItem");//查找要修改的节点
+
+                XmlNodeList ChildNode = xns.ChildNodes;//取出所有的子节点
+
+                foreach (XmlNode xn in ChildNode)
+                {
+                    XmlElement Xele = (XmlElement)xn;//将节点转换一下类型
+                    if (Xele.GetAttribute("id") == "-1")//判断该子节点是否是要查找的节点
+                    {
+                        XmlNodeList Xncn = Xele.ChildNodes;//取出该子节点下面的所有元素
+                        foreach (XmlNode xn2 in Xncn)
+                        {
+                            XmlElement Xele2 = (XmlElement)xn2;//转换类型
+                            if (Xele2.Name == "auto")//判断是否是要查找的元素
+                            {
+                                Xele2.InnerText = Rev;
+                            }
+                        }
+                    }
+                  
+                }
+                XmlDoc.Save(XmlPath);//再一次强调 ，一定要记得保存的该XML文件
+            }
+            catch
+            {
+
+            }
+            
+           
+        
+    }
+        /// <summary>
+        /// 弹出消息
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MenuItem_Click_5(object sender, RoutedEventArgs e)
         {
             string PopMessage = "\tStickyNote\t\n";
             PopMessage += "\t完成时间：2021/3/10\t\n";
-            PopMessage += "\t版本号：v1.0.1\t\n";
+            PopMessage += "\t版本号：v1.1.1\t\n";
             PopMessage += "\t代码地址：https://github.com/Xiang-M-J/StickyNote \t";
             MessageBox.Show(PopMessage);
+        }
+        /// <summary>
+        /// 设置是否开机自启
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MenuItem_Click_6(object sender, RoutedEventArgs e)
+        {
+            if (YesImage.Source == null)
+            {
+                YesImage.Source = new BitmapImage(new Uri("pack://application:,,,/resources/yes.png"));
+                ReviseXml("true");
+            }
+            else
+            {
+                YesImage.Source = null;
+                ReviseXml("false");
+            }
         }
     }
 }
