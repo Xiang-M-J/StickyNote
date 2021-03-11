@@ -60,7 +60,9 @@
 │   ├── StickyNote.ico
 │   ├── StickyNote.png
 │   ├── study.png
+|   ├── yes.png
 │   └── work.png
+|    
 ├── Setting.xaml
 ├── Setting.xaml.cs
 ├── StickyNote
@@ -97,17 +99,14 @@
 │   │   ├── StickyNote.ico
 │   │   ├── StickyNote.png
 │   │   ├── study.png
-│   │   ├── test.xml
 │   │   └── work.png
 │   ├── Setting.xaml
 │   ├── Setting.xaml.cs
-│   ├── StickyNote.csproj
-│   └── template.xml
+│   └── StickyNote.csproj
 ├── StickyNote.csproj
-├── StickyNote.sln
-└── template.xml
+└── StickyNote.sln
 
-9 directories, 75 files
+9 directories, 74 files
 
 ```
 ### 使用指南
@@ -118,7 +117,7 @@
 
 1. 在使用本程序时，会在与.exe文件同路径的文件夹中生成configure.xml文件，该文件的作用为存储用户数据
 
-以下为简单示例 `info`为待办事项内容 `time` 为截止时间 `autostart` 为设置开机自启
+以下为简单示例 `info`为待办事项内容 `time` 为截止时间 `auto` 为设置开机自启
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -139,7 +138,7 @@
     <PicIndex>*</PicIndex>
   </item>
   <item id="-1">
-    <autostart>false</autostart>
+    <auto>false</auto>
   </item>
 </ListBoxItem>
 ```
@@ -217,6 +216,9 @@
   4. 当两个输入框为空时，显示“时间未定”；
   5. 当时钟输入超过24或者分钟输入超过60，显示“每天”
 
+6. 右键文件图标可以进行是否开机自启的设置（但目前不能保证可以正常工作）。
+
+7. 在刚开始使用该软件时，请不要尝试新建configure.xml文件，因为这可能会导致某些意想不到的错误
 
 ### 存在问题
 
