@@ -10,7 +10,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Xml;
 using IWshRuntimeLibrary;
+//using System.Windows.Forms;
 
+using System.ComponentModel;
+using Drawing = System.Drawing;
 namespace StickyNote
 {
     /// <summary>
@@ -18,6 +21,7 @@ namespace StickyNote
     /// </summary>
     public partial class MainWindow : Window
     {
+        private System.Windows.Forms.NotifyIcon notifyIcon;
         public string XmlPath = System.IO.Directory.GetCurrentDirectory() + "/configure.xml";  // 定义Xml文件路径，使其与exe文件处于同一目录下
         public MainWindow()
         {
@@ -28,6 +32,8 @@ namespace StickyNote
             this.Top = 10;
             this.Left = SystemParameters.WorkArea.Width-260;
             #endregion
+
+            InitNotifyIcon();  //初始化托盘图标 
 
             #region 设置是否开机自启和初始化
             if (ReadXml() == "true")
@@ -45,7 +51,53 @@ namespace StickyNote
             Dater.Text = DateTime.Today.ToString();  // 日期选择框初始化
             ReadFile();  // 读取文件初始化
         }
-
+        private void InitNotifyIcon()
+        {
+            this.notifyIcon = new System.Windows.Forms.NotifyIcon();
+            this.notifyIcon.BalloonTipText = "StickNote";
+            this.notifyIcon.ShowBalloonTip(2000);
+            this.notifyIcon.Text = "StickNote";
+            this.notifyIcon.Icon = System.Drawing.Icon.ExtractAssociatedIcon(System.Windows.Forms.Application.ExecutablePath);
+            this.notifyIcon.Visible = true;
+            //打开菜单项
+            System.Windows.Forms.MenuItem open = new System.Windows.Forms.MenuItem("显示");
+            open.Click += new EventHandler(Show);
+            //退出菜单项
+            System.Windows.Forms.MenuItem exit = new System.Windows.Forms.MenuItem("退出");
+            exit.Click += new EventHandler(Close);
+            //关联托盘控件
+            System.Windows.Forms.MenuItem[] childen = new System.Windows.Forms.MenuItem[] { open, exit };
+            notifyIcon.ContextMenu = new System.Windows.Forms.ContextMenu(childen);
+            this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler((o, e) =>
+            {
+                if (e.Button == System.Windows.Forms.MouseButtons.Left) this.Show(o, e);
+            });
+        }
+        private void Show(object sender, EventArgs e)
+        {
+            this.Visibility = System.Windows.Visibility.Visible;
+            this.WindowState = System.Windows.WindowState.Normal;
+            this.ShowInTaskbar = true;
+            this.Activate();
+        }
+        private void Hide(object sender, EventArgs e)
+        {
+            this.ShowInTaskbar = false;
+            this.Visibility = System.Windows.Visibility.Hidden;
+            this.WindowState = System.Windows.WindowState.Minimized;
+        }
+        private void Close(object sender, EventArgs e)
+        {
+            SaveFile();
+            System.Windows.Application.Current.Shutdown();
+        }
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            this.ShowInTaskbar = false;
+            this.WindowState = WindowState.Minimized;
+            e.Cancel = true;
+        }
+        
         /// <summary>
         /// 自定义窗口 Begin
         /// </summary>
@@ -174,7 +226,33 @@ namespace StickyNote
         private void Image3_MouseDown(object sender, MouseButtonEventArgs e)
         {
             SaveFile();
-            this.Close();
+
+            string messageBoxText = "是否直接关闭程序吗?";
+            string caption = "关闭";
+            MessageBoxButton button = MessageBoxButton.YesNo;
+            MessageBoxImage icon = MessageBoxImage.Question;
+            //显示消息框              
+            MessageBoxResult result = MessageBox.Show(messageBoxText, caption, button, icon);
+            //处理消息框信息              
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    this.Close();        
+                    break;
+                case MessageBoxResult.No:
+                    this.ShowInTaskbar = false;
+                    this.WindowState = System.Windows.WindowState.Minimized;
+                    break;
+                default:
+                    this.ShowInTaskbar = false;
+                    //this.Close();
+                    this.WindowState = System.Windows.WindowState.Minimized;
+                    break;
+
+            }
+            //this.ShowInTaskbar = false;
+            ////this.Close();
+            //this.WindowState = System.Windows.WindowState.Minimized;
         }
 
         /// <summary>
