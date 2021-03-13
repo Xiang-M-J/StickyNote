@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StickyNote"
         mc:Ignorable="d"
-        Title="Setting" Height="120" Width="240"  AllowsTransparency="True" WindowStyle="None" Background="Transparent" Closing="Window_Closing"  >
+        Title="Setting" Height="120" Width="240"  AllowsTransparency="True" WindowStyle="None"  ResizeMode="NoResize" Background="Transparent" Closing="Window_Closing"  >
     <Window.Resources>
         <!--自定义RadioButton样式  Begin -->
 

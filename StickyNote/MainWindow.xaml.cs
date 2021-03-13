@@ -29,8 +29,8 @@ namespace StickyNote
 
             #region 设置主窗口的初始位置
             WindowStartupLocation = WindowStartupLocation.Manual;
-            this.Top = 10;
-            this.Left = SystemParameters.WorkArea.Width-260;
+            this.Top = 20;
+            this.Left = SystemParameters.WorkArea.Width-280;
             #endregion
 
             InitNotifyIcon();  //初始化托盘图标 
@@ -45,6 +45,18 @@ namespace StickyNote
             {
                 YesImage.Source = null;
                 StartAutomaticallyDel("StickyNote");
+            }
+            #endregion
+
+            #region 设置是否弹出关闭弹窗
+            if (ReadClose() == "true")
+            {
+                CloseImage.Source = new BitmapImage(new Uri("pack://application:,,,/resources/yes.png"));
+                
+            }
+            else
+            {
+                CloseImage.Source = null;
             }
             #endregion
 
@@ -89,6 +101,7 @@ namespace StickyNote
         private void Close(object sender, EventArgs e)
         {
             SaveFile();
+            this.notifyIcon.Visible = false;
             System.Windows.Application.Current.Shutdown();
         }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -227,34 +240,84 @@ namespace StickyNote
         {
             SaveFile();
 
-            string messageBoxText = "是否直接关闭程序吗?";
-            string caption = "关闭";
-            MessageBoxButton button = MessageBoxButton.YesNo;
-            MessageBoxImage icon = MessageBoxImage.Question;
-            //显示消息框              
-            MessageBoxResult result = MessageBox.Show(messageBoxText, caption, button, icon);
-            //处理消息框信息              
-            switch (result)
+            if (ReadClose() == "true")
             {
-                case MessageBoxResult.Yes:
-                    this.Close();        
-                    break;
-                case MessageBoxResult.No:
-                    this.ShowInTaskbar = false;
-                    this.WindowState = System.Windows.WindowState.Minimized;
-                    break;
-                default:
-                    this.ShowInTaskbar = false;
-                    //this.Close();
-                    this.WindowState = System.Windows.WindowState.Minimized;
-                    break;
-
+                notifyIcon.Visible = false;
+                this.Close();
             }
+            else
+            {
+                CloseMessage closeMessage = new CloseMessage()
+                {
+                    WindowStartupLocation = WindowStartupLocation.CenterScreen
+                };
+                closeMessage.sendMessage = CloseWindow;
+                closeMessage.ShowDialog();
+            }
+            
+
+            //string messageBoxText = "是否直接关闭便签吗?";
+            //string caption = "关闭";
+            //MessageBoxButton button = MessageBoxButton.YesNo;
+            //MessageBoxImage icon = MessageBoxImage.Question;
+            ////显示消息框              
+            //MessageBoxResult result = MessageBox.Show(messageBoxText, caption, button, icon);
+            ////处理消息框信息              
+            //switch (result)
+            //{
+            //    case MessageBoxResult.Yes:
+            //        this.Close();        
+            //        break;
+            //    case MessageBoxResult.No:
+            //        this.ShowInTaskbar = false;
+            //        this.Visibility = Visibility.Collapsed;
+            //        break;
+            //    default:
+            //        this.ShowInTaskbar = false;
+            //        //this.Close();
+            //        this.Visibility = Visibility.Collapsed;
+            //        break;
+
+            //}
+
             //this.ShowInTaskbar = false;
             ////this.Close();
             //this.WindowState = System.Windows.WindowState.Minimized;
         }
 
+        public void CloseWindow(string[] CloseMg)
+        {
+            if (CloseMg[1] == "true")
+            {
+                ReviseClose("true");
+
+            }
+            else
+            {
+                ReviseClose("false");
+            }
+            #region 设置是否弹出关闭弹窗
+            if (ReadClose() == "true")
+            {
+                CloseImage.Source = new BitmapImage(new Uri("pack://application:,,,/resources/yes.png"));
+
+            }
+            else
+            {
+                CloseImage.Source = null;
+            }
+            #endregion
+            if (CloseMg[0] == "Mini")
+            {
+                this.ShowInTaskbar = false;
+                this.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                this.notifyIcon.Visible = false;
+                this.Close();
+            }
+        }
         /// <summary>
         /// 生成并返回字体颜色画笔资源
         /// </summary>
@@ -403,7 +466,7 @@ namespace StickyNote
         {
             Item item = new Item();
             string str = ReadXml();
-           
+            string closeM = ReadClose();
 
             XmlTextWriter writer = new XmlTextWriter(XmlPath, System.Text.Encoding.UTF8);
             
@@ -421,11 +484,16 @@ namespace StickyNote
                 //关闭item元素
                 writer.WriteEndElement(); // 关闭元素
             }
+
             writer.WriteStartElement("Signal");
             writer.WriteAttributeString("id", "-1");
             writer.WriteElementString("auto", str);
-            
-            
+            writer.WriteEndElement();
+
+            writer.WriteStartElement("Close");
+            writer.WriteAttributeString("id", "-2");
+            writer.WriteElementString("Message", closeM);
+            writer.WriteEndElement();
             //if(!Is_Auto){
             //writer.WriteStartElement("Signal");
             //writer.WriteAttributeString("id", "-1");
@@ -824,6 +892,21 @@ namespace StickyNote
                 return "false";
             }
         }
+        private string ReadClose()
+        {
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(XmlPath);
+                XmlNodeList lis = doc.GetElementsByTagName("Message");
+                string str = lis[lis.Count - 1].InnerText;
+                return str;
+            }
+            catch
+            {
+                return "false";
+            }
+        }
         /// <summary>
         /// 开机自启删除
         /// </summary>
@@ -1123,6 +1206,44 @@ namespace StickyNote
            
         
     }
+        private void ReviseClose(string Rev)
+        {
+            try
+            {
+                XmlDocument XmlDoc = new XmlDocument();
+                XmlDoc.Load(XmlPath);//加载xml文件，文件
+
+                XmlNode xns = XmlDoc.SelectSingleNode("ListBoxItem");//查找要修改的节点
+
+                XmlNodeList ChildNode = xns.ChildNodes;//取出所有的子节点
+
+                foreach (XmlNode xn in ChildNode)
+                {
+                    XmlElement Xele = (XmlElement)xn;//将节点转换一下类型
+                    if (Xele.GetAttribute("id") == "-2")//判断该子节点是否是要查找的节点
+                    {
+                        XmlNodeList Xncn = Xele.ChildNodes;//取出该子节点下面的所有元素
+                        foreach (XmlNode xn2 in Xncn)
+                        {
+                            XmlElement Xele2 = (XmlElement)xn2;//转换类型
+                            if (Xele2.Name == "Message")//判断是否是要查找的元素
+                            {
+                                Xele2.InnerText = Rev;
+                            }
+                        }
+                    }
+
+                }
+                XmlDoc.Save(XmlPath);//再一次强调 ，一定要记得保存的该XML文件
+            }
+            catch
+            {
+
+            }
+
+
+
+        }
         /// <summary>
         /// 弹出消息
         /// </summary>
@@ -1132,7 +1253,7 @@ namespace StickyNote
         {
             string PopMessage = "\t程序名：StickyNote\t\n";
             PopMessage += "\t完成时间：2021/3/10\t\n";
-            PopMessage += "\t版本号："+ System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()+ "\t\n";
+            PopMessage += "\t版本号：1.1.3"+ "\t\n";
             PopMessage += "\t代码地址：https://github.com/Xiang-M-J/StickyNote \t";
             MessageBox.Show(PopMessage);
         }
@@ -1152,6 +1273,20 @@ namespace StickyNote
             {
                 YesImage.Source = null;
                 ReviseXml("false");
+            }
+        }
+
+        private void MenuItem_Click_7(object sender, RoutedEventArgs e)
+        {
+            if (CloseImage.Source == null)
+            {
+                CloseImage.Source = new BitmapImage(new Uri("pack://application:,,,/resources/yes.png"));
+                ReviseClose("true");
+            }
+            else
+            {
+                CloseImage.Source = null;
+                ReviseClose("false");
             }
         }
     }
