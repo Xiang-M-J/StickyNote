@@ -254,35 +254,7 @@ namespace StickyNote
                 closeMessage.sendMessage = CloseWindow;
                 closeMessage.ShowDialog();
             }
-            
-
-            //string messageBoxText = "是否直接关闭便签吗?";
-            //string caption = "关闭";
-            //MessageBoxButton button = MessageBoxButton.YesNo;
-            //MessageBoxImage icon = MessageBoxImage.Question;
-            ////显示消息框              
-            //MessageBoxResult result = MessageBox.Show(messageBoxText, caption, button, icon);
-            ////处理消息框信息              
-            //switch (result)
-            //{
-            //    case MessageBoxResult.Yes:
-            //        this.Close();        
-            //        break;
-            //    case MessageBoxResult.No:
-            //        this.ShowInTaskbar = false;
-            //        this.Visibility = Visibility.Collapsed;
-            //        break;
-            //    default:
-            //        this.ShowInTaskbar = false;
-            //        //this.Close();
-            //        this.Visibility = Visibility.Collapsed;
-            //        break;
-
-            //}
-
-            //this.ShowInTaskbar = false;
-            ////this.Close();
-            //this.WindowState = System.Windows.WindowState.Minimized;
+           
         }
 
         public void CloseWindow(string[] CloseMg)
@@ -494,19 +466,7 @@ namespace StickyNote
             writer.WriteAttributeString("id", "-2");
             writer.WriteElementString("Message", closeM);
             writer.WriteEndElement();
-            //if(!Is_Auto){
-            //writer.WriteStartElement("Signal");
-            //writer.WriteAttributeString("id", "-1");
-            //writer.WriteElementString("autostart", str);
-            //}
-            //else
-            //{
-            //    XmlDocument doc = new XmlDocument();
-            //    doc.Load(XmlPath);
-            //    XmlNodeList lis = doc.GetElementsByTagName("autostart");
-            //    lis[0].InnerText = str;
-            //}
-           
+            
             writer.Close();
         }
 
