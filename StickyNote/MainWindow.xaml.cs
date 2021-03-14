@@ -242,8 +242,17 @@ namespace StickyNote
 
             if (ReadClose() == "true")
             {
-                notifyIcon.Visible = false;
-                this.Close();
+                if (ReadJust() == "true")
+                {
+                    notifyIcon.Visible = false;
+                    this.Close();
+                }
+                else
+                {
+                    this.ShowInTaskbar = false;
+                    this.Visibility = Visibility.Collapsed;
+                }
+               
             }
             else
             {
@@ -281,11 +290,13 @@ namespace StickyNote
             #endregion
             if (CloseMg[0] == "Mini")
             {
+                ReviseJust("false");
                 this.ShowInTaskbar = false;
                 this.Visibility = Visibility.Collapsed;
             }
             else
             {
+                ReviseJust("true");
                 this.notifyIcon.Visible = false;
                 this.Close();
             }
@@ -439,6 +450,7 @@ namespace StickyNote
             Item item = new Item();
             string str = ReadXml();
             string closeM = ReadClose();
+            string JustM = ReadJust();
 
             XmlTextWriter writer = new XmlTextWriter(XmlPath, System.Text.Encoding.UTF8);
             
@@ -466,8 +478,29 @@ namespace StickyNote
             writer.WriteAttributeString("id", "-2");
             writer.WriteElementString("Message", closeM);
             writer.WriteEndElement();
+
+            writer.WriteStartElement("Just");
+            writer.WriteAttributeString("id", "-3");
+            writer.WriteElementString("MessageJust",JustM);
+            writer.WriteEndElement();
             
             writer.Close();
+        }
+
+        private string ReadJust()
+        {
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(XmlPath);
+                XmlNodeList lis = doc.GetElementsByTagName("MessageJust");
+                string str = lis[lis.Count - 1].InnerText;
+                return str;
+            }
+            catch
+            {
+                return "false";
+            }
         }
 
         /// <summary>
@@ -652,7 +685,7 @@ namespace StickyNote
         /// <param name="e"></param>
         private void TB_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            Regex re = new Regex("[^0-9.-]+");
+            Regex re = new Regex("[^0-9]+");
             e.Handled = re.IsMatch(e.Text);
         }
 
@@ -719,7 +752,7 @@ namespace StickyNote
 
                 for (int i = 0; i < ItemList.Count; i++)
                 {
-                    plaintext += (i + 1).ToString() + "\t" + ItemList[i].Info + "\t" + ItemList[i].Time + "\n";
+                    plaintext += (i + 1).ToString() + "\t" + ItemList[i].Info + "\t\t" + ItemList[i].Time + "\n";
                 }
                 return plaintext;
             }
@@ -943,7 +976,7 @@ namespace StickyNote
                     plaintext += "=====================================================\n";
                     plaintext += "序号" + "\t" + "待办事项" + "\t\t" + "截止时间\n";
 
-                    plaintext += num.ToString() + "\t" + ExportItem.Info + "\t" + ExportItem.Time + "\n";
+                    plaintext += num.ToString() + "\t" + ExportItem.Info + "\t\t" + ExportItem.Time + "\n";
                     
                     SaveFileDialog sfd = new SaveFileDialog();
                     sfd.Filter = "文本文件(*.txt )|*.txt";
@@ -1204,6 +1237,49 @@ namespace StickyNote
 
 
         }
+
+
+        private void ReviseJust(string Rev)
+        {
+            try
+            {
+                XmlDocument XmlDoc = new XmlDocument();
+                XmlDoc.Load(XmlPath);//加载xml文件，文件
+
+                XmlNode xns = XmlDoc.SelectSingleNode("ListBoxItem");//查找要修改的节点
+
+                XmlNodeList ChildNode = xns.ChildNodes;//取出所有的子节点
+
+                foreach (XmlNode xn in ChildNode)
+                {
+                    XmlElement Xele = (XmlElement)xn;//将节点转换一下类型
+                    if (Xele.GetAttribute("id") == "-3")//判断该子节点是否是要查找的节点
+                    {
+                        XmlNodeList Xncn = Xele.ChildNodes;//取出该子节点下面的所有元素
+                        foreach (XmlNode xn2 in Xncn)
+                        {
+                            XmlElement Xele2 = (XmlElement)xn2;//转换类型
+                            if (Xele2.Name == "MessageJust")//判断是否是要查找的元素
+                            {
+                                Xele2.InnerText = Rev;
+                            }
+                        }
+                    }
+
+                }
+                XmlDoc.Save(XmlPath);//再一次强调 ，一定要记得保存的该XML文件
+            }
+            catch
+            {
+
+            }
+
+
+
+        }
+
+
+
         /// <summary>
         /// 弹出消息
         /// </summary>
