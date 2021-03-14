@@ -80,7 +80,7 @@
                     <RadioButton GroupName="bak" Name="Radio4" Style="{StaticResource MyRadioButton}" Height="20" Width="20" Margin="6,3,0,0" Background="#FFE7CFFF" ></RadioButton>
                     <RadioButton GroupName="bak" Name="Radio5" Style="{StaticResource MyRadioButton}" Height="20" Width="20" Margin="6,3,0,0" Background="#FFCDE9FF" ></RadioButton>
                     <RadioButton GroupName="bak" Name="Radio6" Style="{StaticResource MyRadioButton}" Height="20" Width="20" Margin="6,3,0,0" Background="#FFE1DFDD" ></RadioButton>
-                    <RadioButton GroupName="bak" Name="Radio7" Style="{StaticResource MyRadioButton}" Height="20" Width="20" Margin="6,3,0,0" Background="DimGray"   ></RadioButton>
+                    <RadioButton GroupName="bak" Name="Radio7" Style="{StaticResource MyRadioButton}" Height="20" Width="20" Margin="6,3,0,0" Background="#FF3E3E3E"   ></RadioButton>
                     <RadioButton GroupName="bak" Name="Radio8" Style="{StaticResource MyRadioButton}" Height="20" Width="20" Margin="6,3,0,0" Background="#FF23E9CE" ></RadioButton>
                     <RadioButton GroupName="bak" Name="Radio9" Style="{StaticResource MyRadioButton}" Height="20" Width="20" Margin="6,3,0,0" Background="#FFFFB87D" ></RadioButton>
                 </StackPanel>
@@ -93,13 +93,13 @@
                     <RadioButton GroupName="txt" Name="Radio41" Style="{StaticResource MyRadioButton}" Height="20" Width="20" Margin="6,3,0,0" Background="#FF177000" ></RadioButton>
                     <RadioButton GroupName="txt" Name="Radio51" Style="{StaticResource MyRadioButton}" Height="20" Width="20" Margin="6,3,0,0" Background="White" ></RadioButton>
                     <RadioButton GroupName="txt" Name="Radio61" Style="{StaticResource MyRadioButton}" Height="20" Width="20" Margin="6,3,0,0" Background="#FF7C7C00" ></RadioButton>
-                    <RadioButton GroupName="txt" Name="Radio71" Style="{StaticResource MyRadioButton}" Height="20" Width="20" Margin="6,3,0,0" Background="#c0c0c0"   ></RadioButton>
+                    <RadioButton GroupName="txt" Name="Radio71" Style="{StaticResource MyRadioButton}" Height="20" Width="20" Margin="6,3,0,0" Background="#FFA8A7AB"   ></RadioButton>
                     <RadioButton GroupName="txt" Name="Radio81" Style="{StaticResource MyRadioButton}" Height="20" Width="20" Margin="6,3,0,0" Background="#FF280376" ></RadioButton>
                     <RadioButton GroupName="txt" Name="Radio91" Style="{StaticResource MyRadioButton}" Height="20" Width="20" Margin="6,3,0,0" >
                         <RadioButton.Background>
-                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="Black" Offset="0"/>
-                                <GradientStop Color="#FFFFE8E8" Offset="1"/>
+                            <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                                <GradientStop Color="#008F6C" Offset="0"/>
+                                <GradientStop Color="#1B18AF" Offset="1"/>
                             </LinearGradientBrush>
                         </RadioButton.Background>
                     </RadioButton>

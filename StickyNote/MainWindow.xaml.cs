@@ -300,12 +300,12 @@ namespace StickyNote
 
             GradientStop gs1 = new GradientStop();
             gs1.Offset = 0;
-            gs1.Color = Colors.Red;
+            gs1.Color = Color.FromArgb(255,0,143,108);
             brush.GradientStops.Add(gs1);
 
             GradientStop gs2 = new GradientStop();
             gs2.Offset = 0.5;
-            gs2.Color = Colors.Blue;
+            gs2.Color = Color.FromArgb(255,24,27,175);
             brush.GradientStops.Add(gs2);
 
             return brush;

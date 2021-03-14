@@ -121,7 +121,7 @@
                                 <StackPanel>
                                     <TextBlock Text="{Binding Info}"  Margin="10 0 0 0" FontSize="13" Foreground="{Binding FontColor}"/>
                                     <!--<TextBox Visibility="{Binding See}" Text="{Binding Info}"  Margin="10,-20,0,0" FontSize="13" Background="{Binding BoxBackgroud}" HorizontalAlignment="Stretch" BorderBrush="{x:Null}" ></TextBox>-->
-                                    <TextBlock Text="{Binding Time}" Foreground="#FF1D1D1D" FontSize="7" Margin="20,0,0,0" FontWeight="Bold"></TextBlock>
+                                    <TextBlock Text="{Binding Time}" Foreground="{Binding FontColor}" FontSize="7" Margin="20,0,0,0" FontWeight="Bold"></TextBlock>
                                     <!--<TextBox Text="{Binding Time}" Background="{Binding BoxBackgroud}" FontSize="7" Width="10" Margin="10,-10,0,0" HorizontalAlignment="Stretch" BorderBrush="{x:Null}" Visibility="{Binding See}"></TextBox>-->
                                 </StackPanel>
                             </StackPanel>
